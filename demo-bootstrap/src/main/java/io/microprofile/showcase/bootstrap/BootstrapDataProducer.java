@@ -16,6 +16,7 @@ package io.microprofile.showcase.bootstrap;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
