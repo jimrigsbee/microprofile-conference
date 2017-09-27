@@ -16,9 +16,13 @@ package io.microprofile.showcase.session;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.eclipse.microprofile.auth.LoginConfig;
+
 /**
+ * The JAX-RS application class which sets the application root url and JWT security info
  * @author Iain Duncan
  */
 @ApplicationPath("/")
+@LoginConfig(authMethod = "MP-JWT", realmName = "jwt-domain")
 public class SessionApplication extends Application {
 }

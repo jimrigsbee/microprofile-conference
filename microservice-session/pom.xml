@@ -171,7 +171,19 @@
 
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile</artifactId>
+            <artifactId>microprofile-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>monitor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>microprofile-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>microprofile-metrics</artifactId>
         </dependency>
     </dependencies>
 </project>
