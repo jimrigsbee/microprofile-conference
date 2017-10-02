@@ -19,9 +19,9 @@
             <div class="col-xs">
                 <div *ngIf="undefined == speaker" class="row">
                     <div class="col-xs rounded p-a-1 m-x-1" style="background: rgba(28, 167, 175, 0.4)">
-                        <h4>{{session.title}}</h4>
+                        <h4>{{session.title}}<span *ngIf="session.viponly" style="vertical-align: super">VIP</span></h4>
                     </div>
-                </div>
+                </div>˙
                 <div class="row m-t-1">
                     <div class="col-xs">
                         <textarea class="form-control rounded" id="abstract" rows="9"
@@ -43,9 +43,11 @@
             </div>
             <div class="row p-a-1">
               <div class="btn-group">
-                <button type="button" style="white-space: normal" class="btn btn-primary" (click)="rateSession(10)">Great!</button>
+                  <fieldset [attr.disabled]="voted==true ? '' : null">
+                <button type="button" style="white-space: normal" class="btn btn-primary" (click)="rateSession(10)" >Great!</button>
                 <button type="button" style="white-space: normal" class="btn btn-primary" (click)="rateSession(5)">Not bad</button>
                 <button type="button" style="white-space: normal" class="btn btn-primary" (click)="rateSession(1)">Needs some work</button>
+                  </fieldset>
               </div>
             </div>
             <div class="row p-a-1">

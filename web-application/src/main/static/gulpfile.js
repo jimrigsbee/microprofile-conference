@@ -71,8 +71,8 @@ gulp.task('css-third-party', function () {
     var scripts = [
         './node_modules/fullcalendar/dist/fullcalendar.min.css',
         './node_modules/font-awesome/css/font-awesome.min.css',
-        './node_modules/primeng/resources/themes/afternoon/theme.css',
-        './node_modules/primeng/resources/themes/afternoon/images/*.png',
+        './node_modules/primeng/resources/themes/start/theme.css',
+        './node_modules/primeng/resources/themes/start/images/*.png',
         './node_modules/primeng/resources/primeng.min.css'
     ];
 
@@ -193,11 +193,11 @@ gulp.task('js-bundles', function () {
 
 gulp.task('pages', function () {
     var app = gulp.src([
-        './app/**/*.{jsp,html,htm}'
+        './app/**/*.{css,jsp,html,htm}'
     ], {base: '.app/'}).pipe(gulp.dest(target + '/' + resources + '/app'));
 
     var idx = gulp.src([
-        './*.{jsp,html,htm}'
+        './*.{css,jsp,html,htm}'
     ]).pipe(gulp.dest(target + '/' + resources + '/'));
 
     return es.concat(app, idx);

@@ -5,6 +5,7 @@ export class Session {
     code: string;
     title: string;
     type: string;
+    viponly: boolean;
     speakers: string[];
     schedule: string;
     links: {[key: string]: string} = {};

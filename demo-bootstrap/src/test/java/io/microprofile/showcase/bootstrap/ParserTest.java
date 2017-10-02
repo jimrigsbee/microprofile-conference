@@ -40,7 +40,7 @@ public class ParserTest {
         BootstrapData data = parser.parse(schedule, speaker);
         Collection<Session> sessions = data.getSessions();
 
-        Assert.assertEquals(100, sessions.size());
+        Assert.assertEquals(101, sessions.size());
 
         Optional<Session> sessionCode = sessions.stream()
             .filter(s -> s.getCode().equals("6E168E19-4B92-ECD8-01C6-6B4FC55C68FE"))
@@ -70,6 +70,12 @@ public class ParserTest {
         Assert.assertEquals("2018-05-18", matchingSchedule.get().getDate());
         Assert.assertEquals("11:33:29", matchingSchedule.get().getStartTime());
         Assert.assertEquals("60.0", String.valueOf(matchingSchedule.get().getLength()));
+
+        // Check for the VIP only session
+        Optional<Session> vipSession = sessions.stream()
+            .filter(s -> s.isVIPOnly())
+            .findAny();
+        Assert.assertTrue(vipSession.isPresent());
 
         //Confirm no null elements
         for (final Session session : sessions) {

@@ -34,6 +34,7 @@ export class SchedulesComponent implements OnInit {
     private pSchedule: NGShedule;
 
     constructor(private router: Router, private scheduleService: ScheduleService, private sessionService: SessionService) {
+        console.log("SchedulesComponent.ctor");
     }
 
     ngOnInit(): void {
@@ -110,8 +111,9 @@ export class SchedulesComponent implements OnInit {
 
         });
 
+        console.log("First event date: %s", self.defaultDate.toISOString());
         //Go to the first event
-        this.pSchedule.gotoDate(this.defaultDate);
+        this.pSchedule.gotoDate(this.defaultDate.toISOString());
 
         return events;
     }

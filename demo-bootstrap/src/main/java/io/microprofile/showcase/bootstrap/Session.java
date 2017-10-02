@@ -63,6 +63,14 @@ public class Session extends JsonWrapper {
         return schedule;
     }
 
+    public boolean isVIPOnly() {
+        boolean isVIPOnly = false;
+        if(underlying.containsKey("vipOnly")) {
+            isVIPOnly = underlying.getBoolean("vipOnly");
+        }
+        return isVIPOnly;
+    }
+
     @Override
     public String toString() {
         return getId() + "::" + getCode();

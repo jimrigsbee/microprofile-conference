@@ -1398,5 +1398,20 @@
         "title": "et tristique pellentesque, tellus",
         "type": "Human Resources",
         "speaker": 55
+    },
+    {
+        "id": 101,
+        "session-id": 1,
+        "venue": "VIP Center",
+        "venue-id": 8,
+        "date": "6/30/2017",
+        "start-time": "2017-06-30 11:00:00",
+        "duration": 60,
+        "abstract": "A discussion of how to get more performance from you HR system",
+        "code": "6E168E19-4B92-ECD8-01C6-7B4FC55C68FE",
+        "title": "How to get more from your HR system",
+        "type": "Human Resources",
+        "speaker": 55,
+        "vipOnly": true
     }
 ]

@@ -13,6 +13,8 @@
  */
 package io.microprofile.showcase.session;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -23,27 +25,96 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.metrics.Counter;
+import org.eclipse.microprofile.metrics.Histogram;
+import org.eclipse.microprofile.metrics.Metadata;
+import org.eclipse.microprofile.metrics.MetricRegistry;
+import org.eclipse.microprofile.metrics.MetricType;
+import org.eclipse.microprofile.metrics.annotation.Metric;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 
 /**
  * @author Ken Finnigan
  * @author Heiko Braun
+ * @author Scott Stark
  */
 @Path("sessions")
+@PermitAll
 @ApplicationScoped
 public class SessionResource {
 
     @Inject
+    @Metric(name = "requestCount", description = "All JAX-RS request made to the SessionResource",
+        displayName = "SessionResource#requestCount")
+    private Counter requestCount;
+
+    /**
+     * The application metrics registry that allows access to any metric to be accessed/created
+     */
+    @Inject
+    private MetricRegistry metrics;
+
+    /**
+     * The store of sessions
+     */
+    @Inject
     private SessionStore sessionStore;
+
+    @PostConstruct
+    void init() {
+        Collection<Session> sessions = sessionStore.getSessions();
+        System.out.printf("SessionResource.init, session count=%d\n", sessions.size());
+        // Create a histogram of the session abstract word counts
+        Metadata metadata = new Metadata(SessionResource.class.getName()+".abstractWordCount", MetricType.HISTOGRAM);
+        metadata.setDescription("Word count histogram for the session abstracts");
+        Histogram abstractWordCount = metrics.histogram(metadata);
+        for(Session session : sessions) {
+            String[] words = session.getAbstract().split("\\s+");
+            abstractWordCount.update(words.length);
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Session> allSessions() throws Exception {
-        return sessionStore.getSessions();
+    // Accumlate all method time in a SessionResource.methodTime timer metric
+    @Timed
+    public Collection<Session> allSessions(@Context SecurityContext securityContext) throws Exception {
+        requestCount.inc();
+        // Access the authenticated user as a JsonWebToken
+        JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
+        if (jwt == null) {
+            // User was not authenticated
+            return Collections.emptyList();
+        }
+        String userName = jwt.getName();
+        boolean isVIP = securityContext.isUserInRole("VIP");
+        System.out.printf("allSessions(%s), isVIP=%s, User token: %s\n", userName, isVIP, jwt);
+        // Check if the user has a session_time_preference in the token
+        Optional<String> sessionTimePref = jwt.claim("session_time_preference");
+        if(sessionTimePref.isPresent()) {
+            // Create a session filter for the time preference...
+        }
+
+        // If the user does NOT have a VIP role, filter out the VIP sessions
+        Collection<Session> sessions;
+        if (!isVIP) {
+            sessions = sessionStore.getSessions().stream().filter(session -> !session.isVIPOnly()).collect(Collectors.toList());
+        } else {
+            sessions = sessionStore.getSessions();
+        }
+        return sessions;
     }
 
     @POST
@@ -56,14 +127,16 @@ public class SessionResource {
     @GET
     @Path("/{sessionId}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Accumlate all method time in a SessionResource.methodTime timer metric
+    @Timed
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) throws Exception {
+        requestCount.inc();
         final Optional<Session> result = sessionStore.find(sessionId);
-
+        System.out.printf("retrieveSession(%s), exists=%s\n", sessionId, result.isPresent());
         if (result.isPresent())
             return Response.ok(result.get()).build();
         else
             return Response.status(404).build();
-
     }
 
     @PUT
@@ -94,16 +167,22 @@ public class SessionResource {
     @GET
     @Path("/{sessionId}/speakers")
     @Produces(MediaType.APPLICATION_JSON)
+    // Accumlate all method time in a SessionResource.methodTime timer metric
+    @Timed
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) throws Exception {
-
-        final Optional<Session> session = sessionStore.getSessions().stream()
+        requestCount.inc();
+        final Optional<Session> optSession = sessionStore.getSessions().stream()
                 .filter(s -> Objects.equals(s.getId(), sessionId))
                 .findFirst();
-
-        if (session.isPresent())
-            return Response.ok(session.get().getSpeakers()).build();
-        else
+        Session session = optSession.orElse(null);
+        if (session != null) {
+            System.out.printf("sessionSpeakers(%s), count=%d\n", sessionId, session.getSpeakers().size());
+            return Response.ok(session.getSpeakers()).build();
+        }
+        else {
+            System.out.printf("sessionSpeakers(%d) does not exist\n", sessionId);
             return Response.status(404).build();
+        }
 
     }
 
@@ -140,6 +219,4 @@ public class SessionResource {
 
         return Response.status(404).build();
     }
-
-
 }

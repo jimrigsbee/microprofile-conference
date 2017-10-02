@@ -1,0 +1,42 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(192, 188, 188, 0.9);
+    z-index: 999;
+}
+
+.dialog {
+    z-index: 1000;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 200px;
+    width: 90%;
+    border-radius: 20px;
+    max-width: 520px;
+    background-color: rgba(20, 173, 175, 0.4);
+    padding: 12px;
+    box-shadow: 20px 20px 10px rgba(138, 94, 175, 0.4);
+}
+
+@media (min-width: 768px) {
+    .dialog {
+        top: 40px;
+    }
+}
+
+.dialog__close-btn {
+    border: 0;
+    background: none;
+    color: #2d2d2d;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.2em;
+}

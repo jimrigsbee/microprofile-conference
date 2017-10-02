@@ -12,6 +12,7 @@ swarm:
                   flag: required
                   module-options:
                     rolesProperties: jwt-roles.properties
+                    logExceptions: true
           auth-modules:
             http:
               code: org.wildfly.extension.undertow.security.jaspi.modules.HTTPSchemeServerAuthModule

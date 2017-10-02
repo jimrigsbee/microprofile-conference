@@ -3,8 +3,9 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import {Session} from "./session";
 import {SessionService} from "./session.service";
 import {Speaker} from "../speaker/speaker";
+import {AuthService} from "../shared/auth.service";
 
-enableProdMode();
+//enableProdMode();
 
 @Component({
     selector: 'sessions',
@@ -15,12 +16,17 @@ export class SessionsComponent implements OnInit, OnChanges {
     sessions: Session[];
     selectedSession: Session;
     search: string;
+    auth: AuthService;
+    showJwtDialog: boolean = false;
     @Input() speaker: Speaker;
 
-    constructor(private router: Router, private route: ActivatedRoute, private sessionService: SessionService) {
+    constructor(private router: Router, private route: ActivatedRoute, private sessionService: SessionService, auth: AuthService) {
+        console.log("SessionsComponent.ctor");
+        this.auth = auth;
     }
 
     getSessions(): void {
+        console.log("SessionsComponent.getSessions");
         this.sessionService.getSessions().then(sessions => this.sessions = sessions).catch(SessionsComponent.handleError);
     }
 
@@ -33,6 +39,7 @@ export class SessionsComponent implements OnInit, OnChanges {
                 _self.onSelectId(params['id']);
             });
         });
+
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -56,6 +63,12 @@ export class SessionsComponent implements OnInit, OnChanges {
 
     gotoDetail(): void {
         this.router.navigate(['/detail', this.selectedSession.id]);
+    }
+
+    logout(): void {
+        this.auth.logout();
+        console.log("logged out, navigating back to /");
+        this.router.navigateByUrl("/login");
     }
 
     private static handleError(error: any): Promise<any> {

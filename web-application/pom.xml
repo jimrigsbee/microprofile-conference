@@ -30,8 +30,6 @@
 
     <properties>
         <src.dir>src/main/java</src.dir>
-
-        <service.name>${project.artifactId}</service.name>
         <service.name>${project.artifactId}</service.name>
         <service.port>9191</service.port>
         <docker.user>example</docker.user>
@@ -158,10 +156,12 @@
                             <tomeeClassifier>webprofile</tomeeClassifier>
                             <!--@formatter:off-->
                             <webapps>
+                                <!--
                                 <webapp>${project.groupId}:microservice-speaker:${project.version}?name=microservice-speaker</webapp>
                                 <webapp>${project.groupId}:microservice-session:${project.version}?name=microservice-session</webapp>
                                 <webapp>${project.groupId}:microservice-schedule:${project.version}?name=microservice-schedule</webapp>
                                 <webapp>${project.groupId}:microservice-vote:${project.version}?name=microservice-vote</webapp>
+                                -->
                             </webapps>
                             <!--@formatter:on-->
                         </configuration>

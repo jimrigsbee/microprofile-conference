@@ -84,5 +84,13 @@ public class Session {
         return schedule;
     }
 
+    public boolean isVIPOnly() {
+        boolean isVIPOnly = false;
+        if(underlying.containsKey("vipOnly")) {
+            isVIPOnly = underlying.getBoolean("vipOnly");
+        }
+        return isVIPOnly;
+    }
+
 }
 

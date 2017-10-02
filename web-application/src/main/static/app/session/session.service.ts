@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Session} from "./session";
 import {Endpoint} from "../shared/endpoint";
-import {Http} from "@angular/http";
+import {JwtService} from '../shared/jwt.service';
 import "../rxjs-operators";
 import {EndpointsService} from "../shared/endpoints.service";
 
@@ -11,7 +11,8 @@ export class SessionService {
     private sessions: Session[];
     private endPoint: Endpoint;
 
-    constructor(private http: Http, private endpointsService: EndpointsService) {
+    constructor(private jwtService: JwtService, private endpointsService: EndpointsService) {
+        console.log("SessionService.ctor");
     }
 
     init(callback: () => void): void {
@@ -29,18 +30,21 @@ export class SessionService {
 
     getSessions(): Promise<Session[]> {
 
-        if (undefined != this.sessions) {
+        const hasSessions = (undefined != this.sessions);
+        console.log("getSessions, hasSessions: "+hasSessions);
+        if (hasSessions) {
             return Promise.resolve(this.sessions);
         }
 
-        return this.http.get(this.endPoint.url)
-            .toPromise()
+        console.log("Loading sessions from: "+this.endPoint.url);
+        return this.jwtService.getWithJwt(this.endPoint.url)
             .then(response => this.setSessions(response.json()))
             .catch(this.handleError);
     }
 
     private setSessions(any: any): Session[] {
         this.sessions = any as Session[];
+        console.log("Loaded %d sessions", this.sessions.length);
         return this.sessions;
     }
 

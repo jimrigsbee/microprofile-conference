@@ -23,6 +23,17 @@
             <input #sessionSearch type="text" class="form-control" placeholder="[Session name]"
                    (keyup)="onSearch(sessionSearch.value)">
         </div>
+        <div *ngIf="undefined == speaker && auth.loggedIn()" class="col-xs">
+            <button (click)="logout()" class="btn btn-primary">Logout</button>
+            <button (click)="showJwtDialog = !showJwtDialog" class="btn btn-primary">Show JWT</button>
+            <app-dialog [(visible)]="showJwtDialog">
+                <h1>JWT Claims</h1>
+                <pre>
+                    {{auth.getJwtClaims() | json}}
+                </pre>
+                <button (click)="showJwtDialog = !showJwtDialog" class="btn">Dismiss</button>
+            </app-dialog>
+        </div>
     </div>
 
     <div class="row p-a-1">

@@ -5,7 +5,8 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule } from "@angular/http";
 import {AppComponent} from "./app.component";
 import {AppRouting} from "./app.routing";
-import {ScheduleModule} from 'primeng/primeng';
+import {JwtService} from "./shared/jwt.service";
+import {ScheduleModule, TreeModule, DataScrollerModule, DataTableModule, TabViewModule} from 'primeng/primeng';
 import {SpeakersComponent} from "./speaker/speakers.component";
 import {SpeakerComponent} from "./speaker/speaker.component";
 import {SpeakerService} from "./speaker/speaker.service";
@@ -25,20 +26,39 @@ import {SessionFilterSpeaker} from "./session/session.filter.speaker";
 import {SessionSpeakersComponent} from "./session/session.speakers.component";
 import {MomentModule} from 'angular2-moment';
 import {ChartModule} from 'primeng/primeng';
+import {AuthGuard} from "./shared/authguard";
+import {AuthService} from "./shared/auth.service";
+import {LoginComponent} from "./shared/login.component";
+import { DialogComponent } from './shared/dialog.component';
+import { JwtComponent } from './shared/jwt.component';
+import {HealthComponent} from "./health/health.component";
+import {HealthService} from "./health/health.service";
+import {MetricsService} from "./metrics/metrics.service";
+import {TimerComponent} from "./shared/timer.component";
+import {MetricsComponent} from "./metrics/metrics.component";
 
 @NgModule({
     imports: [
         BrowserModule,
+        DataScrollerModule,
+        DataTableModule,
         FormsModule,
         HttpModule,
         JsonpModule,
         ScheduleModule,
+        TreeModule,
         AppRouting,
         MomentModule,
         ChartModule,
+        TabViewModule
     ],
     declarations: [
         AppComponent,
+        DialogComponent,
+        HealthComponent,
+        JwtComponent,
+        LoginComponent,
+        MetricsComponent,
         SpeakersComponent,
         SpeakerComponent,
         SessionsComponent,
@@ -46,6 +66,7 @@ import {ChartModule} from 'primeng/primeng';
         SessionSpeakersComponent,
         SchedulesComponent,
         ScheduleComponent,
+        TimerComponent,
         VotesComponent,
         VoteComponent,
         SpeakerFilter,
@@ -53,7 +74,12 @@ import {ChartModule} from 'primeng/primeng';
         SessionFilterSpeaker
     ],
     providers: [
+        AuthGuard,
+        AuthService,
         EndpointsService,
+        HealthService,
+        JwtService,
+        MetricsService,
         SpeakerService,
         SessionService,
         ScheduleService,

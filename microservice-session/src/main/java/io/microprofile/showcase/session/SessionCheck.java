@@ -1,5 +1,7 @@
 package io.microprofile.showcase.session;
 
+import java.util.Date;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -9,7 +11,7 @@ import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 
 /**
- * The health check for the session application
+ * Illustration of new MP-1.2 health check for the session application
  */
 @Health
 @ApplicationScoped
@@ -24,6 +26,7 @@ public class SessionCheck implements HealthCheck {
     public HealthCheckResponse call() {
         return HealthCheckResponse.named("sessions-check")
             .withData(sessionCountName, sessionStore.getSessions().size())
+            .withData("lastCheckDate", new Date().toString())
             .up()
             .build();
     }

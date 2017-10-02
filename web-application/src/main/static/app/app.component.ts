@@ -1,4 +1,5 @@
 import {Component, enableProdMode} from "@angular/core";
+import {AuthService} from "./shared/auth.service";
 
 enableProdMode();
 
@@ -8,5 +9,6 @@ enableProdMode();
 })
 
 export class AppComponent {
-    title = 'Microprofile Conference';
+    title = 'Microprofile 1.2 Conference';
+    constructor(private auth: AuthService) {}
 }

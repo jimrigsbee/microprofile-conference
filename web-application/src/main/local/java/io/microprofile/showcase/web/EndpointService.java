@@ -93,6 +93,7 @@ public class EndpointService {
                     .map(entry -> this.getEndpoint(String.class.cast(entry.getKey()), String.class.cast(entry.getValue()))).collect(Collectors.toSet());
 
             eps = new Endpoints();
+
             eps.setApplication(application);
             eps.setEndpoints(endpointSet);
 
@@ -107,6 +108,7 @@ public class EndpointService {
         final Endpoint ep = new Endpoint();
         ep.setName(name);
         ep.setUrl(val);
+        System.out.printf("Endpoint(%s, %s)\n", name, val);
         return ep;
     }
 

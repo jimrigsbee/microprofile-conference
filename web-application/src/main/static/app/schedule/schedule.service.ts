@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Schedule} from "./schedule";
 import {Endpoint} from "../shared/endpoint";
+import {EndpointsService} from "../shared/endpoints.service";
 import {Http} from "@angular/http";
 import "../rxjs-operators";
-import {EndpointsService} from "../shared/endpoints.service";
 
 @Injectable()
 export class ScheduleService {
