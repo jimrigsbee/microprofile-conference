@@ -30,6 +30,9 @@ export class MetricsService {
         console.log(this.sessionMetricsEP);
     }
 
+    hasSessionMetrics(): boolean {
+        return this.sessionMetrics != undefined;
+    }
     getSessionMetrics():Promise<any> {
         if (undefined != this.sessionMetrics) {
             return Promise.resolve(this.sessionMetrics);

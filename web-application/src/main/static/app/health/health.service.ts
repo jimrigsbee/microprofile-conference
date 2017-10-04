@@ -18,9 +18,11 @@ export class HealthService {
         if (undefined == this.sessionCheck) {
             this.endpointsService.getEndpoint("session-health")
                 .then(ep => this.setSessionEP(ep))
+                .then(callback)
                 .catch(this.handleError);
+        } else {
+            callback();
         }
-        callback();
     }
 
     setSessionEP(ep: Endpoint) {
@@ -28,26 +30,28 @@ export class HealthService {
         console.log("Loaded session-health EP:");
         console.log(this.sessionCheckEP);
     }
-    getSessionHealth(): any {
-        if(undefined == this.sessionCheckEP) {
-            return undefined;
+    hasSessionHealth(): boolean {
+        return this.sessionCheck != undefined;
+    }
+
+    getSessionHealth():Promise<any> {
+        if (undefined != this.sessionCheck) {
+            return Promise.resolve(this.sessionCheck);
         }
+
         console.log("getSessionHealth, loading="+this.loading);
-        if(undefined == this.sessionCheck && this.loading == false) {
-            this.loading = true;
-            console.log("Requesting health from: "+this.sessionCheckEP.url);
-            this.http.get(this.sessionCheckEP.url)
-                .toPromise()
-                .then((response: Response) => this.setSessionHealth(response.json()))
-                .catch(this.handleError);
-        }
-        return this.sessionCheck;
+        this.loading = true;
+        return this.http.get(this.sessionCheckEP.url)
+            .toPromise()
+            .then(response => this.setSessionHealth(response.json()))
+            .catch(this.handleError);
     }
     setSessionHealth(data: any): void {
         console.log("setSessionHealth:");
         console.log(data);
         this.sessionCheck = data;
         this.loading = false;
+        return this.sessionCheck;
     }
     handleError(error: any): any {
         console.error('An error occurred', error);

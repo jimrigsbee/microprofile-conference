@@ -29,13 +29,15 @@ export class MetricsComponent implements OnInit {
     }
 
     hasSessionMetrics(): boolean {
-        return this.metricsService.getSessionMetrics() != undefined;
+        return this.metricsService.hasSessionMetrics();
     }
     refreshSessionMetrics(): any {
-        this.metricsService.setSessionMetrics(undefined);
-        return this.metricsService.getSessionMetrics()
-            .then(data => this.setMetrics(data))
-            .catch(msg => console.error(msg));
+        if(this.hasSessionMetrics()) {
+            this.metricsService.setSessionMetrics(undefined);
+            return this.metricsService.getSessionMetrics()
+                .then(data => this.setMetrics(data))
+                .catch(msg => console.error(msg));
+        }
     }
     setMetrics(data: any): void {
         console.log("setMetrics:");

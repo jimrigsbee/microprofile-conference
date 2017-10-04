@@ -8,28 +8,42 @@ import {HealthService} from "./health.service";
 export class HealthComponent implements OnInit {
     title = 'Health Checks';
     showDialog: boolean = false;
+    healthCheck: any;
 
     constructor(private healthService: HealthService) {
         console.log("HealthComponent.ctor");
     }
 
     ngOnInit(): void {
+        console.log("enter ngOnInit");
         let _self = this;
         this.healthService.init(function () {
            console.log("Initialized healthService");
+            _self.healthService.getSessionHealth()
+                .then(data => _self.setHealthCheck(data))
+                .catch(msg => console.error(msg));
         });
+        console.log("exit ngOnInit");
     }
 
     hasSessionHealth(): boolean {
-        return this.healthService.getSessionHealth() != undefined;
+        return this.healthService.hasSessionHealth();
     }
     refreshSessionHealth(): any {
-        this.healthService.setSessionHealth(undefined);
-        return this.getSessionHealth();
+        console.log("refreshSessionHealth");
+        if(this.hasSessionHealth()) {
+            this.healthService.setSessionHealth(undefined);
+            console.log("refreshSessionHealth.cleared session health");
+            this.healthService.getSessionHealth()
+                .then(data => this.setHealthCheck(data))
+                .catch(msg => console.error(msg));
+            console.log("refreshSessionHealth.requested session health");
+        }
     }
-    getSessionHealth(): any {
-        //console.log("getSessionHealth");
-        var data: any = this.healthService.getSessionHealth();
+    setHealthCheck(data: any): any {
+        console.log("setHealthCheck");
+        this.healthCheck = data;
+        console.log(this.healthCheck)
         //console.log(data);
         return data;
     }
