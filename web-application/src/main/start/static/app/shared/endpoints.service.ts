@@ -13,7 +13,8 @@ export class EndpointsService {
         'speaker': <Endpoint> {name: 'speaker', url: 'http://localhost:4040/speaker'},
         'session': <Endpoint> {name: 'session', url: 'http://localhost:5050/sessions'},
         'schedule': <Endpoint> {name: 'schedule', url: 'http://localhost:6060/schedule'},
-        'vote': <Endpoint> {name: 'vote', url: 'http://localhost:7070/vote'}
+        'vote': <Endpoint> {name: 'vote', url: 'http://localhost:7070/vote'},
+        'authz': <Endpoint> {name: 'authz', url: 'http://localhost:5055/authz'}
     };
     error: string;
     endpoints: Endpoints;

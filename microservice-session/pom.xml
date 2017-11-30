@@ -171,11 +171,11 @@
 
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile-jwt</artifactId>
+            <artifactId>microprofile-health</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>monitor</artifactId>
+            <artifactId>microprofile-jwt</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>

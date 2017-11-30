@@ -32,7 +32,11 @@
         <skipDemoData>false</skipDemoData>
         <speaker.qualifier.jar>-exec</speaker.qualifier.jar>
         <session.qualifier.jar>-swarm</session.qualifier.jar>
-        <session.exec.arg>-Dswarm.http.port=5050</session.exec.arg>
+        <session.exec.arg1>-Dswarm.http.port=5050</session.exec.arg1>
+        <session.exec.arg2>-Dswarm.management.http.disable=true</session.exec.arg2>
+        <authz.qualifier.jar>-swarm</authz.qualifier.jar>
+        <authz.exec.arg1>-Dswarm.http.port=5055</authz.exec.arg1>
+        <authz.exec.arg2>-Dswarm.management.http.disable=true</authz.exec.arg2>
         <schedule.exec.arg1>--port</schedule.exec.arg1>
         <schedule.exec.arg2>6060</schedule.exec.arg2>
     </properties>
@@ -127,7 +131,8 @@
                                     <arguments>
                                         <argument>-jar</argument>
                                         <argument>target/microservice-session${session.qualifier.jar}.jar</argument>
-                                        <argument>${session.exec.arg}</argument>
+                                        <argument>${session.exec.arg1}</argument>
+                                        <argument>${session.exec.arg2}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -166,6 +171,24 @@
                                     <environmentVariables>
                                         <SKIP_DEMO_DATA>${skipDemoData}</SKIP_DEMO_DATA>
                                     </environmentVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>authz</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <async>true</async>
+                                    <executable>java</executable>
+                                    <workingDirectory>../microservice-authz</workingDirectory>
+                                    <arguments>
+                                        <argument>-jar</argument>
+                                        <argument>target/microservice-authz${authz.qualifier.jar}.jar</argument>
+                                        <argument>${authz.exec.arg1}</argument>
+                                        <argument>${authz.exec.arg2}</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>
