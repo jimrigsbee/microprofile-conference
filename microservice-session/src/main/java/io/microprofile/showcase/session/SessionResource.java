@@ -55,16 +55,16 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 @ApplicationScoped
 public class SessionResource {
 
-    @Inject
-    @Metric(name = "requestCount", description = "All JAX-RS request made to the SessionResource",
-        displayName = "SessionResource#requestCount")
-    private Counter requestCount;
+//    @Inject
+//    @Metric(name = "requestCount", description = "All JAX-RS request made to the SessionResource",
+//        displayName = "SessionResource#requestCount")
+//    private Counter requestCount;
 
     /**
      * The application metrics registry that allows access to any metric to be accessed/created
      */
-    @Inject
-    private MetricRegistry metrics;
+//    @Inject
+//    private MetricRegistry metrics;
 
     /**
      * The store of sessions
@@ -79,11 +79,11 @@ public class SessionResource {
         // Create a histogram of the session abstract word counts
         Metadata metadata = new Metadata(SessionResource.class.getName()+".abstractWordCount", MetricType.HISTOGRAM);
         metadata.setDescription("Word count histogram for the session abstracts");
-        Histogram abstractWordCount = metrics.histogram(metadata);
-        for(Session session : sessions) {
-            String[] words = session.getAbstract().split("\\s+");
-            abstractWordCount.update(words.length);
-        }
+//        Histogram abstractWordCount = metrics.histogram(metadata);
+//        for(Session session : sessions) {
+//            String[] words = session.getAbstract().split("\\s+");
+//            abstractWordCount.update(words.length);
+//        }
     }
 
     @GET
@@ -91,7 +91,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Collection<Session> allSessions(@Context SecurityContext securityContext) throws Exception {
-        requestCount.inc();
+//        requestCount.inc();
         // Access the authenticated user as a JsonWebToken
         JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
         if (jwt == null) {
@@ -130,7 +130,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) throws Exception {
-        requestCount.inc();
+//        requestCount.inc();
         final Optional<Session> result = sessionStore.find(sessionId);
         System.out.printf("retrieveSession(%s), exists=%s\n", sessionId, result.isPresent());
         if (result.isPresent())
@@ -170,7 +170,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) throws Exception {
-        requestCount.inc();
+//        requestCount.inc();
         final Optional<Session> optSession = sessionStore.getSessions().stream()
                 .filter(s -> Objects.equals(s.getId(), sessionId))
                 .findFirst();

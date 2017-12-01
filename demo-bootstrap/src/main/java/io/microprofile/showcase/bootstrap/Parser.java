@@ -14,12 +14,6 @@
 
 package io.microprofile.showcase.bootstrap;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonReaderFactory;
-import javax.json.JsonValue;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -27,8 +21,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+//import java.util.logging.Logger;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonReaderFactory;
+import javax.json.JsonValue;
 
 /**
  * @author Heiko Braun
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  */
 public class Parser {
 
-    private final Logger log = Logger.getLogger(Parser.class.getName());
+    //private final Logger log = Logger.getLogger(Parser.class.getName());
     private final AtomicInteger id = new AtomicInteger(0);
     private final AtomicInteger speakerId = new AtomicInteger(0);
 

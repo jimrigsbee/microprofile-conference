@@ -15,11 +15,6 @@
 package io.microprofile.showcase.tokens;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.json.JsonObject;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  */
@@ -42,7 +37,7 @@ public class AuthToken {
     }
 
     void setToken(final String id) {
-        this.id_token = id_token;
+        this.id_token = id;
     }
 
 }

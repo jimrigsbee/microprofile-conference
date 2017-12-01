@@ -25,7 +25,7 @@ public class Application extends javax.ws.rs.core.Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        final Set<Class<?>> resources = new HashSet();
+        final Set<Class<?>> resources = new HashSet<Class<?>>();
 
         resources.add(ScheduleResource.class);
         resources.add(CORSFilter.class);

@@ -159,7 +159,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.8.2</version>
             <scope>provided</scope>
         </dependency>
 
@@ -181,9 +180,9 @@
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>microprofile-config</artifactId>
         </dependency>
-        <dependency>
+<!--         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>microprofile-metrics</artifactId>
-        </dependency>
+        </dependency> -->
     </dependencies>
 </project>

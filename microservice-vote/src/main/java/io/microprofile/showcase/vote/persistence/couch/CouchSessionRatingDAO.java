@@ -75,7 +75,7 @@ public class CouchSessionRatingDAO implements SessionRatingDAO {
 
     @Override
     public SessionRating updateRating(SessionRating newRating) {
-        SessionRating original = getSessionRating(newRating.getId());
+        /*SessionRating original = */ getSessionRating(newRating.getId());
 
         couch.request(newRating.getId(), RequestType.PUT, newRating, null, null, 201);
 
@@ -86,7 +86,7 @@ public class CouchSessionRatingDAO implements SessionRatingDAO {
     @Override
     public void deleteRating(String id) {
 
-        SessionRating original = getSessionRating(id);
+        /*SessionRating original = */ getSessionRating(id);
 
         couch.request(id, RequestType.DELETE, null, null, null, 200);
     }
@@ -145,7 +145,7 @@ public class CouchSessionRatingDAO implements SessionRatingDAO {
     }
 
     private void deleteSessionRating(String id) {
-        SessionRating sessionRating = getSessionRating(id);
+        /*SessionRating sessionRating = */ getSessionRating(id);
 
         couch.request(id, RequestType.DELETE, null, null, null, 200);
     }

@@ -15,8 +15,6 @@
 package io.microprofile.showcase.bootstrap;
 
 import io.microprofile.showcase.session.Session;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * @author Heiko Braun
