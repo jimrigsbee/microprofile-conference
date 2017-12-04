@@ -343,6 +343,9 @@
              		  	  	<features>
                		    		<acceptLicense>true</acceptLicense>
                   	 			<feature>mpConfig-1.1</feature>
+                          <feature>mpMetrics-1.0</feature>
+                          <feature>mpHealth-1.0</feature>
+                          <feature>mpFaultTolerance-1.0</feature>
               		 		</features>
      						<installDirectory>${project.build.directory}/wlp</installDirectory>
       						<serverName>${wlpServerName}</serverName>
