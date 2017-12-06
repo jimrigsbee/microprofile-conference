@@ -2,7 +2,7 @@ import {Component, enableProdMode, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {Schedule} from "./schedule";
 import {ScheduleService} from "./schedule.service";
-import {Schedule as NGShedule} from "primeng/primeng";
+import {ScheduleModule as NGShedule} from "primeng/primeng";
 import * as moment from "moment";
 import {SessionService} from "../session/session.service";
 import {Session} from "../session/session";
@@ -23,12 +23,13 @@ export class SchedulesComponent implements OnInit {
     selectedSchedule: Schedule;
     events: any[];
     header: any;
-    defaultView: string = "agendaWeek";
+    defaultView: string = "month";
     allDaySlot: boolean = false;
-    minTime: any = moment.duration(8, "hours");
-    maxTime: any = moment.duration(21, "hours");
+    minTime: any = moment.duration(0, "hours");
+    maxTime: any = moment.duration(24, "hours");
     defaultDate: any = momentConstructor();
     aspectRatio: number = 2.1;
+    timezone: false;
 
     @ViewChild('schedule')
     private pSchedule: NGShedule;
@@ -48,9 +49,9 @@ export class SchedulesComponent implements OnInit {
         });
 
         this.header = {
-            left: '',
-            center: '',
-            right: 'agendaWeek, agendaDay, prev, next '
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
         };
 
         var d = new Date();
@@ -90,8 +91,11 @@ export class SchedulesComponent implements OnInit {
             //dayOfWeek,month,dayOfMonth,dayOfYear,era,year,monthValue,chronology,leapYear
 
             console.log(s);
-            var datetime = s.date + " " + s.startTime;
+            //var datetime = s.date + "T" + s.startTime + "-00:00";
+            var datetime = s.date + "T" + s.startTime;
+            console.log("schedule date: " + datetime);
             let d = new Date(datetime);
+            console.log("converted date: " + d);
             let start = momentConstructor(d.toISOString());
             let end = start.add(1, 'hours');
 

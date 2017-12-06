@@ -37,10 +37,10 @@
     <jndiEntry jndiName="cloudant/password" value="${env.CLOUDANT_PASSWORD}"/>
 
     <quickStartSecurity userName="confAdmin" userPassword="microprofile"/>
-	<keyStore id="defaultKeyStore" password="mpKeystore"/>
+	  <keyStore id="defaultKeyStore" password="mpKeystore"/>
 
 	<!-- Automatically expand WAR files and EAR files -->
-	<applicationManager autoExpand="true"/>
+	  <applicationManager autoExpand="true"/>
 
     <applicationMonitor updateTrigger="mbean"/>
 
