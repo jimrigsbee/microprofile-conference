@@ -39,6 +39,9 @@
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>
                 <artifactId>wildfly-swarm-plugin</artifactId>
+                <configuration>
+                	<useUberJar>true</useUberJar>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>io.fabric8</groupId>
