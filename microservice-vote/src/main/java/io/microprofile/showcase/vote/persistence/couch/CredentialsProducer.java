@@ -16,14 +16,9 @@
 
 package io.microprofile.showcase.vote.persistence.couch;
 
-import java.util.Optional;
-
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class CredentialsProducer {
@@ -37,13 +32,9 @@ public class CredentialsProducer {
     @Resource(lookup="cloudant/password")
     protected String resourcePassword;
     
-	@Inject
-    @ConfigProperty(name="VCAP_SERVICES")  
-    Optional <Credentials> cred;
-	
     @Produces
     public Credentials newCredentials() {
-        Credentials credentials = cred.orElse(null);
+        Credentials credentials = null;
         if (credentials == null) {
         	if ( (("${env.CLOUDANT_URL}").equals(resourceUrl)) && (("${env.CLOUDANT_USERNAME}").equals(resourceUsername)) 
         			&& ( ("${env.CLOUDANT_PASSWORD}").equals(resourcePassword) ) )
