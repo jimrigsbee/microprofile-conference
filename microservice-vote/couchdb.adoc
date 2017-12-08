@@ -1,0 +1,35 @@
+== To Install a local couchdb
+
+=== Fedora (RHEL?)
+----
+sudo dnf install couchdb
+----
+
+=== macOS
+
+https://github.com/apache/couchdb/blob/master/INSTALL.Unix.md#mac-os-x
+
+== Post Install
+- Check if a `couchdb` user was created on your system.  Using `dnf` this happened automagically.  If not, try https://github.com/apache/couchdb/blob/master/INSTALL.Unix.md#user-registration
+- Start the server:
+----
+[rallred@t460p microprofile-conference]$ sudo systemctl start couchdb
+[rallred@t460p microprofile-conference]$ sudo systemctl status couchdb
+● couchdb.service - CouchDB Server
+   Loaded: loaded (/usr/lib/systemd/system/couchdb.service; disabled; vendor preset: disabled)
+   Active: active (running) since Fri 2017-12-08 14:19:55 EST; 5s ago
+ Main PID: 21428 (beam.smp)
+    Tasks: 20 (limit: 4915)
+   CGroup: /system.slice/couchdb.service
+           ├─21428 /usr/lib64/erlang/erts-8.3.5.1/bin/beam.smp -Bd -K true -A 4 -- -root /usr/lib64/erlang -progname erl -- -home /var/lib/couchdb -- -noshell -noinput -sasl errlog_type error -couch_ini /etc/cou
+           ├─21438 erl_child_setup 1024
+           ├─21450 sh -s disksup
+           ├─21452 /usr/lib64/erlang/lib/os_mon-2.4.2/priv/bin/memsup
+           └─21453 /usr/lib64/erlang/lib/os_mon-2.4.2/priv/bin/cpu_sup
+
+Dec 08 14:19:55 t460p systemd[1]: Starting CouchDB Server...
+Dec 08 14:19:55 t460p couchdb[21428]: Apache CouchDB 1.6.1 (LogLevel=info) is logging to /var/log/couchdb/couch.log.
+Dec 08 14:19:55 t460p couchdb[21428]: Apache CouchDB has started. Time to relax.
+Dec 08 14:19:55 t460p systemd[1]: Started CouchDB Server.
+----
+- Open web console http://localhost:5984/_utils/index.html and click the button in the bottom right to add an `admin` user with the password `redhat123`
