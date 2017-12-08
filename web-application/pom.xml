@@ -100,7 +100,6 @@
                       <image>
                           <name>showcase/${project.artifactId}:${project.version}</name>
                           <build>
-                              <!-- <from>jboss-webserver-3/webserver31-tomcat8-openshift</from> -->
                               <from>jboss-eap-7/eap70-openshift</from>
                               <assembly>
                                   <basedir>/deployments</basedir>

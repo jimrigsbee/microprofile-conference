@@ -64,7 +64,9 @@ public class EndpointService {
     @Path("/list")
     public Endpoints getEndpoints() {
     	
-    		String application = System.getProperty("ENDPOINT_NAME","conference");
+    		String application = System.getenv("ENDPOINT_NAME");
+    		if (application == null || "".equals(application))
+    			application = "conference";
 
         return this.getCachedEndpoints(application);
     }

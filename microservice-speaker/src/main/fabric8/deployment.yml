@@ -4,7 +4,7 @@ spec:
       containers:
         - readinessProbe:
             httpGet:
-              path: /
+              path: /speaker
               port: 8080
               scheme: HTTP
             failureThreshold: 4
@@ -14,14 +14,11 @@ spec:
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
-              path: /
+              path: /speaker
               port: 8080
               scheme: HTTP
-            failureThreshold: 2
+            failureThreshold: 4
             initialDelaySeconds: 15
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 5
-          env:
-            - name: ENDPOINT_NAME
-              value: "openshift"
