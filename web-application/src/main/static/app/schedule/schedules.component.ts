@@ -2,7 +2,7 @@ import {Component, enableProdMode, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {Schedule} from "./schedule";
 import {ScheduleService} from "./schedule.service";
-import {ScheduleModule as NGShedule} from "primeng/primeng";
+import {Schedule as NGShedule} from "primeng/primeng";
 import * as moment from "moment";
 import {SessionService} from "../session/session.service";
 import {Session} from "../session/session";

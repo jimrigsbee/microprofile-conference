@@ -17,8 +17,6 @@ implied. ~ See the License for the specific language governing permissions and ~
     <packaging>war</packaging>
 
     <properties>
-        <docker.user>example</docker.user>
-        <icon>http://microprofile.io/app/images/logo.png</icon>
         <version.fabric8-maven-plugin>3.5.28</version.fabric8-maven-plugin>
     </properties>
 

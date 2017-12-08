@@ -30,10 +30,7 @@
 
     <properties>
         <src.dir>src/main/java</src.dir>
-        <service.name>${project.artifactId}</service.name>
-        <service.port>9191</service.port>
-        <docker.user>example</docker.user>
-        <icon>http://microprofile.io/app/images/logo.png</icon>
+        <version.fabric8-maven-plugin>3.5.28</version.fabric8-maven-plugin>
     </properties>
 
     <build>
@@ -83,11 +80,59 @@
                     <workingDirectory>src/main/static</workingDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${version.fabric8-maven-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>fmp</id>
+                        <goals>
+                            <goal>resource</goal>
+                            <goal>helm</goal>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                  <mode>kubernetes</mode>
+                  <images>
+                      <image>
+                          <name>showcase/${project.artifactId}:${project.version}</name>
+                          <build>
+                              <from>jboss-webserver-3/webserver31-tomcat8-openshift</from>
+                              <assembly>
+                                  <basedir>/deployments</basedir>
+                                  <descriptorRef>artifact</descriptorRef>
+                              </assembly>
+                          </build>
+                      </image>
+                  </images>
+                </configuration>
+            </plugin>
         </plugins>
 
     </build>
 
     <profiles>
+        <profile>
+          <id>cleanup-node</id>
+          <build>
+            <plugins>
+                <plugin>
+                  <artifactId>maven-clean-plugin</artifactId>
+                  <version>3.0.0</version>
+                  <configuration>
+                      <filesets>
+                          <fileset>
+                              <directory>src/main/static/node_modules</directory>
+                          </fileset>
+                      </filesets>
+                  </configuration>
+                </plugin>
+            </plugins>
+          </build>
+        </profile>
         <profile>
             <id>tomee</id>
             <activation>
@@ -226,101 +271,6 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
-        </profile>
-
-        <profile>
-            <id>ui</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-endpoint-service</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${basedir}/src/main/static</outputDirectory>
-                                    <overwrite>true</overwrite>
-                                    <resources>
-                                        <resource>
-                                            <directory>src/main/start/static</directory>
-                                            <filtering>false</filtering>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>fabric8</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <!--This plugin requires that you Docker environment variables are defined correctly, check them with:-->
-                        <!--docker-machine env-->
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>fabric8-maven-plugin</artifactId>
-                        <configuration>
-                            <mode>kubernetes</mode>
-                            <images>
-                                <image>
-                                    <name>${docker.user}/${project.artifactId}:${project.version}</name>
-                                    <build>
-                                        <from>tomee:8-jdk-7.0.1-plus</from>
-                                        <assembly>
-                                            <basedir>/deployments</basedir>
-                                            <descriptorRef>artifact</descriptorRef>
-                                        </assembly>
-                                    </build>
-                                    <watch>
-                                        <interval>5000</interval>
-                                    </watch>
-                                </image>
-                            </images>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>resource</goal>
-                                    <goal>build</goal>
-                                    <!--<goal>deploy</goal>-->
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
-            <id>clean</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>3.0.0</version>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>src/main/static/node_modules</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 
