@@ -14,24 +14,22 @@
 package io.microprofile.showcase.web;
 
 
-import org.apache.commons.lang3.StringUtils;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.servlet.ServletContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.servlet.ServletContext;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/endpoints")
 @ApplicationScoped
@@ -60,16 +58,13 @@ public class EndpointService {
     /**
      * Get the named application endpoints.
      *
-     * @param application String name
      * @return Endpoints
      */
     @GET
-    @Path("/{application}")
-    public Endpoints getEndpoints(@PathParam("application") final String application) {
-
-        if (StringUtils.isBlank(application)) {
-            throw new WebApplicationException("Empty application not accepted");
-        }
+    @Path("/list")
+    public Endpoints getEndpoints() {
+    	
+    		String application = System.getProperty("ENDPOINT_NAME","conference");
 
         return this.getCachedEndpoints(application);
     }

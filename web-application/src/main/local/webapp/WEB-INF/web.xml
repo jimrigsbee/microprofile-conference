@@ -19,7 +19,7 @@
 
     <display-name>Microprofile Conference</display-name>
 
-    <servlet-mapping>
+    <!-- <servlet-mapping>
         <servlet-name>jsp</servlet-name>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
@@ -64,13 +64,13 @@
         <init-param>
             <param-name>xpoweredBy</param-name>
             <param-value>false</param-value>
-        </init-param>
+        </init-param>-->
         <!-- Add the following init-param -->
-        <init-param>
+        <!--<init-param>
             <param-name>development</param-name>
             <param-value>true</param-value>
         </init-param>
         <load-on-startup>3</load-on-startup>
-    </servlet>
+    </servlet> -->
 
 </web-app>

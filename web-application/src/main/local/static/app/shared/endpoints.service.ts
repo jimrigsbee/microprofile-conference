@@ -18,7 +18,7 @@ export class EndpointsService {
     //noinspection TypeScriptUnresolvedVariable
     private getEndpoints(): Promise<Endpoints> {
 
-        return this.http.get('/service/endpoints/conference')
+        return this.http.get('/service/endpoints/list')
             .toPromise()
             .then(response => response.json() as Endpoints)
             .catch(EndpointsService.handleError);

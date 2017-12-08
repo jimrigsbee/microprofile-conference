@@ -100,7 +100,8 @@
                       <image>
                           <name>showcase/${project.artifactId}:${project.version}</name>
                           <build>
-                              <from>jboss-webserver-3/webserver31-tomcat8-openshift</from>
+                              <!-- <from>jboss-webserver-3/webserver31-tomcat8-openshift</from> -->
+                              <from>jboss-eap-7/eap70-openshift</from>
                               <assembly>
                                   <basedir>/deployments</basedir>
                                   <descriptorRef>artifact</descriptorRef>
@@ -215,16 +216,16 @@
             </build>
             <dependencies>
 
+                <dependency>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </dependency>
+
                 <!--PROVIDED-->
                 <dependency>
                     <groupId>javax.servlet</groupId>
                     <artifactId>javax.servlet-api</artifactId>
                     <version>3.1.0</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>commons-lang3</artifactId>
                     <scope>provided</scope>
                 </dependency>
 
