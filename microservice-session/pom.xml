@@ -50,9 +50,6 @@ implied. ~ See the License for the specific language governing permissions and ~
                     <includes>
                       <include>wildfly-swarm</include>
                     </includes>
-                    <excludes>
-                      <exclude>webapp</exclude>
-                    </excludes>
                   </generator>
                 </configuration>
             </plugin>

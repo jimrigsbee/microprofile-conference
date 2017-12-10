@@ -1,0 +1,28 @@
+spec:
+  template:
+    spec:
+      containers:
+        - readinessProbe:
+            httpGet:
+              path: /vote
+              port: 7070
+              scheme: HTTP
+            failureThreshold: 4
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /speaker
+              port: 7070
+              scheme: HTTP
+            failureThreshold: 4
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          ports:
+          - containerPort: 7070
+            name: http
+            protocol: TCP

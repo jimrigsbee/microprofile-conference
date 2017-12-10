@@ -31,6 +31,11 @@
     <properties>
         <src.dir>src/main/java</src.dir>
         <version.fabric8-maven-plugin>3.5.28</version.fabric8-maven-plugin>
+        <!-- These two properties must match your openshift environment
+            They are used to generate service URLs for the Angular app
+            to access the services remotely -->
+        <openshift.project>mp</openshift.project>
+        <openshift.domain.suffix>192.168.99.100.nip.io</openshift.domain.suffix>
     </properties>
 
     <build>
@@ -184,6 +189,7 @@
                             <webResources>
                                 <resource>
                                     <directory>src/main/local/webapp</directory>
+                                    <filtering>true</filtering>
                                 </resource>
                                 <resource>
                                     <directory>target/static-resources</directory>
