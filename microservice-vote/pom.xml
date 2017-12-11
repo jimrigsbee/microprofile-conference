@@ -327,6 +327,26 @@
                   </execution>
                 </executions>
                 <configuration>
+                  <mode>kubernetes</mode>
+                  <images>
+                    <image>
+                      <name>showcase/${project.artifactId}:${project.version}</name>
+                      <build>
+                        <from>openjdk:latest</from>
+                        <assembly>
+                          <inline>
+                            <files>
+                              <file>
+                                <source>target/${project.artifactId}.jar</source>
+                              </file>
+                            </files>
+                          </inline>
+                          <basedir>/deployments</basedir>
+                        </assembly>
+                        <cmd>java -jar deployments/${project.artifactId}.jar</cmd>
+                      </build>
+                    </image>
+                  </images>
                   <enricher>
                     <config>
                       <fmp-service>
@@ -335,32 +355,8 @@
                       </fmp-service>
                     </config>
                   </enricher>
-                  <generator>
-                    <includes>
-                      <include>java-exec</include>
-                    </includes>
-                    <config>
-                      <java-exec>
-                        <webPort>0</webPort>
-                        <mainClass>wlp.lib.extract.SelfExtractRun</mainClass>
-                      </java-exec>
-                    </config>
-                  </generator>
                 </configuration>
             </plugin>
-            <plugin>
-               <groupId>org.codehaus.mojo</groupId>
-               <artifactId>exec-maven-plugin</artifactId>
-               <version>${version.exec.plugin}</version>
-               <configuration>
-                 <mainClass>wlp.lib.extract.SelfExtractRun</mainClass>
-                 <additionalClasspathElements>
-                   <additionalClasspathElement>
-                     target/${project.artifactId}.jar
-                   </additionalClasspathElement>
-                 </additionalClasspathElements>
-               </configuration>
-           </plugin>
          </plugins>
     </build>
 </project>

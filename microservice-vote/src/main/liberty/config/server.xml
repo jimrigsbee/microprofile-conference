@@ -30,7 +30,7 @@
         <feature>mpHealth-1.0</feature>
     </featureManager>
 
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+    <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
     <jndiEntry jndiName="cloudant/url" value="http://localhost:5984"/>
     <jndiEntry jndiName="cloudant/username" value="admin"/>
