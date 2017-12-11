@@ -16,32 +16,33 @@
 
 package io.microprofile.showcase.vote.persistence.couch;
 
-import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+@SuppressWarnings("cdi-ambiguous-dependency")
 @ApplicationScoped
 public class CredentialsProducer {
     
-	@Resource(lookup="cloudant/url")
+	@Inject
+	@ConfigProperty(name="COUCH_SERVICE", defaultValue="http://localhost:5984/")
     protected String resourceUrl;
 
-    @Resource(lookup="cloudant/username")
+	@Inject
+    @ConfigProperty(name="COUCH_USERNAME", defaultValue="admin")
     protected String resourceUsername;
-
-    @Resource(lookup="cloudant/password")
+	
+	@Inject
+    @ConfigProperty(name="COUCH_PASSWORD", defaultValue="redhat123")
     protected String resourcePassword;
     
     @Produces
     public Credentials newCredentials() {
-        Credentials credentials = null;
-        if (credentials == null) {
-        	if ( (("${env.CLOUDANT_URL}").equals(resourceUrl)) && (("${env.CLOUDANT_USERNAME}").equals(resourceUsername)) 
-        			&& ( ("${env.CLOUDANT_PASSWORD}").equals(resourcePassword) ) )
-        		credentials = null;
-        	else
-        		credentials = new Credentials(resourceUsername, resourcePassword, resourceUrl);
-        } 
+    	System.out.print("Injected: URL: "+ resourceUrl + " USERNAME: " + resourceUsername + " PASSWORD: "+ resourcePassword);
+        Credentials credentials = new Credentials(resourceUsername, resourcePassword, resourceUrl);
+
         return credentials;
     }
 }
