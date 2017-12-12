@@ -15,6 +15,7 @@
  */
 package io.microprofile.showcase.vote.persistence.couch;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,15 +29,16 @@ import javax.inject.Inject;
 
 import org.eclipse.microprofile.faulttolerance.Asynchronous;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.faulttolerance.exceptions.CircuitBreakerOpenException;
 import org.eclipse.microprofile.health.Health;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 
-import org.eclipse.microprofile.metrics.annotation.Timed;
-
-import io.microprofile.showcase.vote.model.Attendee;
 import io.microprofile.showcase.vote.model.SessionRating;
 import io.microprofile.showcase.vote.persistence.Persistent;
 import io.microprofile.showcase.vote.persistence.SessionRatingDAO;
@@ -128,6 +130,8 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
         return querySessionRating("attendee", attendeeId);
     }
 
+    @Retry(maxRetries = 1, retryOn=Exception.class)
+    @Fallback
     private Collection<SessionRating> querySessionRating(String query, String value) {
 
         AllDocs allDocs = couch.request("_design/ratings/_view/" + query, "key", "\"" + value + "\"", RequestType.GET, null, AllDocs.class, null, 200);
@@ -147,11 +151,15 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
 
         return ratings;
     }
+    
+
 
     @Override
-    @Timeout(5000)
+    @Retry(maxRetries = 5, delay=3000, delayUnit=ChronoUnit.MILLIS)
+    @Fallback(CouchSessionFallbackHandler.class)
+    @CircuitBreaker(successThreshold = 10, requestVolumeThreshold = 4, failureRatio=0.75, delay = 1000)
     public Collection<SessionRating> getAllRatings() {
-
+    	
         AllDocs allDocs = couch.request("_design/ratings/_view/all", RequestType.GET, null, AllDocs.class, null, 200);
 
         Collection<SessionRating> sessionRatings = new ArrayList<SessionRating>();

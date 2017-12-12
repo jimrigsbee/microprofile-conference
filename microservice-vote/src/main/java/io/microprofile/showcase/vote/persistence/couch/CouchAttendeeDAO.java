@@ -28,6 +28,7 @@ import javax.inject.Inject;
 
 import org.eclipse.microprofile.faulttolerance.Asynchronous;
 import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.health.Health;
@@ -125,6 +126,7 @@ public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
     }
 
     @Override
+    @Retry(maxRetries = 1, retryOn = Exception.class)
     public Attendee getAttendee(String id) {
         Attendee attendee = couch.request(id, RequestType.GET, null, Attendee.class, null, 200, true);
         return attendee;
