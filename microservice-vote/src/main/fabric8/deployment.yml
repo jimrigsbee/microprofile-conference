@@ -33,3 +33,6 @@ spec:
           - containerPort: 7070
             name: http
             protocol: TCP
+          - containerPort: 9443
+            name: https
+            protocol: TCP

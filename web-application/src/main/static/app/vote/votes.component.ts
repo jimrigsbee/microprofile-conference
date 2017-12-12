@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {VoteService} from "./vote.service";
 import {Rating} from "./rating";
 import {UIChart} from "primeng/components/chart/chart";
+import {EndpointsService} from "../shared/endpoints.service";
+import {Endpoint} from "../shared/endpoint";
 
 enableProdMode();
 
@@ -13,6 +15,8 @@ enableProdMode();
 
 export class VotesComponent implements OnInit {
     title = 'Votes';
+    metricsendpoint: string;
+    healthendpoint: string;
     votes: Rating[];
     selectedVote: Rating;
     data: any;
@@ -21,7 +25,7 @@ export class VotesComponent implements OnInit {
     @ViewChild('chart')
     private chart: UIChart;
 
-    constructor(private router: Router, private voteService: VoteService) {
+    constructor(private router: Router, private voteService: VoteService, private endpointsService: EndpointsService) {
     }
 
     ngOnInit(): void {
@@ -39,6 +43,22 @@ export class VotesComponent implements OnInit {
             }
         };
 
+        this.endpointsService.getEndpoint("vote-health")
+            .then(ep => this.setHealthEP(ep))
+            .catch(this.handleError);
+
+        this.endpointsService.getEndpoint("vote-metrics")
+            .then(ep => this.setMetricEP(ep))
+            .catch(this.handleError);
+
+    }
+
+    setHealthEP(ep: Endpoint) {
+        this.healthendpoint = ep.url;
+    }
+
+    setMetricEP(ep: Endpoint) {
+        this.metricsendpoint = ep.url;
     }
 
     getVotes(): void {

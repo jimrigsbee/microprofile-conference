@@ -1,0 +1,9 @@
+
+metadata:
+  name: ${project.artifactId}-ssl
+spec:
+  to:
+    kind: Service
+    name: ${project.artifactId}-secure
+  tls:
+    termination: passthrough
