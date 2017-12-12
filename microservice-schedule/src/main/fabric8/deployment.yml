@@ -4,8 +4,8 @@ spec:
       containers:
         - readinessProbe:
             httpGet:
-              path: /vote
-              port: 7070
+              path: /schedule/all
+              port: 8080
               scheme: HTTP
             failureThreshold: 4
             initialDelaySeconds: 15
@@ -14,22 +14,15 @@ spec:
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
-              path: /vote
-              port: 7070
+              path: /schedule/all
+              port: 8080
               scheme: HTTP
             failureThreshold: 4
             initialDelaySeconds: 15
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 5
-          env:
-            - name: COUCH_USERNAME
-              value: admin
-            - name: COUCH_PASSWORD
-              value: redhat123
-            - name: COUCH_SERVICE
-              value: "http://couchdb:5984/"
           ports:
-          - containerPort: 7070
+          - containerPort: 8080
             name: http
             protocol: TCP

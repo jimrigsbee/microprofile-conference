@@ -3,7 +3,7 @@ Provided using link:https://developer.ibm.com/wasdev/[WebSphere Liberty]
 
 == How it works
 
-The vote microservice stores feedback from the sessions and displays how well all sessions were liked in a pie chart.  If the vote service is is running in a Cloud Foundry environment, or manually configured (via server.xml) to connect to a CouchDB database, the votes will be persisted.  Otherwise, the vote data will simply be stored in-memory.  
+The vote microservice stores feedback from the sessions and displays how well all sessions were liked in a pie chart.  If the vote service is is running in a Cloud Foundry environment, or manually configured (via server.xml) to connect to a CouchDB database, the votes will be persisted.  Otherwise, the vote data will simply be stored in-memory.
 
 === Endpoints
 
@@ -61,3 +61,6 @@ By default the microservice will start on port 7070. To set it to a different po
 ```
 
 Note: if you run the package command with the 'liberty' profile the jar file will be called microservice-vote-liberty.jar.
+
+=== OpenShift Container
+See https://github.com/jimrigsbee/couchdb-docker to build a container image for Couchdb that will run on OpenShift 3.x
