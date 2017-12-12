@@ -1,0 +1,92 @@
+= Microprofile Showcase Application
+== Running on Red Hat OpenShift 3.x
+
+== General information
+
+See the README.adoc for general information about the application.
+
+You can use Maven to deploy the entire application to Red Hat OpenShift 3.x.  Currently the application was tested on OpenShift 3.6.
+The application is deployed using the link:http://maven.fabric8.io[Maven Fabric8 plugin].
+
+== Pre-Requisites
+=== Docker Client
+You must have access to the docker client 1.12 or higher. Install docker for your operating system.
+
+=== Access to an OpenShift cluster
+You may use a remote OpenShift cluster to deploy the application or use a local environment. We recommend
+using the link:https://developers.redhat.com/products/cdk/overview/[Red Hat Container Development Kit] which provides
+a minimal cluster.
+
+Configure a Minishift (CDK) profile for a minimum of:
+
+* 10 GB memory
+* 40 GB disk space
+* 2 or more CPUs
+
+We have tested the deployment of the application on Minishift using VirtualBox 5.1.22 (or higher)
+as the virtualization implementation.
+
+=== Apache CouchDB
+The voting microservice can work with an in-memory database (hashmap) or store its data in an Apache
+CouchDB instance.  To build an deploy an instance of CouchDB, follow these steps in a terminal window. These instructions
+assume that Minishift is up and running. If using a remote OpenShift cluster, adjust commands as needed.
+
+----
+$ eval $(minishift docker-env)
+$ git clone https://github.com/jimrigsbee/couchdb-docker.git
+$ cd couchdb-docker/2.1.1
+$ ./build-openshift.sh
+$ cd openshift
+$ oc login -u admin -p admin
+$ oc new-project mp
+$ oc process -f couchdb-template.yml | oc create -f -
+----
+
+Verify that the pod and service are running in your OpenShift instance.
+
+== Deploying the Application
+=== Build the Application
+----
+$ git clone https://github.com/jimrigsbee/microprofile-conference.git
+$ cd microprofile-conference
+$ mvn clean package
+----
+=== Deploy the Web Application
+
+If you haven't already done so, login to the OpenShift cluster and create the project:
+----
+$ oc login -u admin -p admin
+$ oc new-project mp
+----
+Execute the Fabric8 plugin to build and deploy the application to the OpenShift cluster:
+----
+$ cd microprofile-conference/web-application
+$ mvn fabric8:deploy
+----
+Verify that the application deployed by clicking on its route link in the OpenShift web console.
+The application will not function correctly until its microservices are deployed (see next section).
+----
+$ minishift console
+----
+
+=== Deploy the Microservices
+
+For each microservice listed below, change into the folder indicated and use the Fabric8 plugin to
+deploy the service to the OpenShift cluster.
+[options="header"]
+|=====
+| Project Folder Name
+| microservice-schedule
+| microservice-vote
+| microservice-speaker
+| microservice-authz
+| microservice-session
+|=====
+
+----
+$ cd {folder-name}
+$ mvn fabric8:deploy
+----
+Use the OpenShift web console to verify the service deployed and started properly.
+
+After all services are successfully deployed, verify the web application works as expected.
