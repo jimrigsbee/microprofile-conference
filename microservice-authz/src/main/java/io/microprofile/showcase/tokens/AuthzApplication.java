@@ -17,7 +17,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 /**
- * The JAX-RS application class which sets the application root url and JWT security info
+ * The JAX-RS application class which sets the application root url 
  * @author Scott Stark
  */
 @ApplicationPath("/")

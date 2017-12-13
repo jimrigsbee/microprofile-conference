@@ -58,6 +58,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                  <!-- use the wildfly-swarm generator -->
                   <generator>
                     <includes>
                       <include>wildfly-swarm</include>
@@ -84,7 +85,7 @@
             <artifactId>demo-bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <!-- Include appropriate fractions for microprofile -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>microprofile-jwt</artifactId>

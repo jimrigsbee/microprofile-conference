@@ -25,16 +25,16 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.jwt.Claims;
 
-/**
- */
 @Path("authz")
 @ApplicationScoped
 public class AuthzResource {
 
+    // Create/return a token if valid credentials are passed
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createTokenForCredentials(Credentials credentials) throws Exception {
+        // Validate the credentials received
         System.out.printf("Creating token for username: %s\n", credentials.getUsername());
         String username = credentials.getUsername();
         String simpleName = simpleName(username);
@@ -45,17 +45,22 @@ public class AuthzResource {
             return Response.status(403).build();
         }
 
+        // Construct token claims
         HashMap<String, Object> claims = new HashMap<>();
         claims.put(Claims.upn.name(), username);
         claims.put(Claims.preferred_username.name(), simpleName);
+        // There are resource files named based on type of user
+        // This relies on a strict naming convention for users!
         String jsonResName = String.format("/%s.json", simpleName);
+        // Generate the token with claims
         String stoken = TokenUtils.generateTokenString(jsonResName, claims);
         System.out.printf("Created token: %s\n", stoken);
         AuthToken token = new AuthToken(credentials.getUsername(), stoken);
-
+        // Return HTTP 200 with token
         return Response.ok(token).build();
     }
 
+    // Extract the first part of the username from an email address
     private String simpleName(String username) {
         String simpleName = username;
         int atIndex = username.indexOf('@');

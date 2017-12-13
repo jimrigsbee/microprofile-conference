@@ -21,6 +21,7 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 
 /**
  * The health check for the session application
+ * Scope is application wide
  */
 @Health
 @ApplicationScoped
