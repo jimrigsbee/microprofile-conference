@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.microprofile.showcase.bootstrap.BootstrapData;
 import io.microprofile.showcase.bootstrap.SessionFactory;
@@ -38,6 +39,12 @@ public class SessionStore {
     @Inject
     BootstrapData bootstrapData;
 
+    // Get the desired state of loading default data
+    // Use MP 1.2 configuration
+    @Inject
+    @ConfigProperty(name = "loadSampleData", defaultValue = "true")
+    private Boolean loadSampleData;
+
     private final ConcurrentHashMap<String, Session> storage = new ConcurrentHashMap<>();
 
     public Session save(final Session session) {
@@ -48,11 +55,14 @@ public class SessionStore {
 
     @PostConstruct
     private void initStore() {
+      if (loadSampleData) {
         Logger.getLogger(SessionStore.class.getName()).log(Level.INFO, "Initialise sessions from bootstrap data");
 
         bootstrapData.getSessions()
             .forEach(bootstrap -> storage.put(bootstrap.getId(), SessionFactory.fromBootstrap(bootstrap)));
-
+      } else {
+        Logger.getLogger(SessionStore.class.getName()).log(Level.WARNING, "Bypassed loading from bootstrap data");
+      }
     }
 
     public Collection<Session> getSessions() {

@@ -51,10 +51,12 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
  * @author Scott Stark
  */
 @Path("sessions")
+// Permit all methods to be invoked
 @PermitAll
 @ApplicationScoped
 public class SessionResource {
 
+   // Provide a metric 'requestCount' that records how many times a GET method is invoked
    @Inject
    @Metric(name = "requestCount", description = "All JAX-RS request made to the SessionResource",
        displayName = "SessionResource#requestCount")
@@ -76,10 +78,11 @@ public class SessionResource {
     void init() {
         Collection<Session> sessions = sessionStore.getSessions();
         System.out.printf("SessionResource.init, session count=%d\n", sessions.size());
-        // Create a histogram of the session abstract word counts
+        // Create a metrics histogram of the session abstract word counts
         Metadata metadata = new Metadata(SessionResource.class.getName()+".abstractWordCount", MetricType.HISTOGRAM);
         metadata.setDescription("Word count histogram for the session abstracts");
         Histogram abstractWordCount = metrics.histogram(metadata);
+        // Populate the histogram with abstract word counts
         for(Session session : sessions) {
            String[] words = session.getAbstract().split("\\s+");
            abstractWordCount.update(words.length);
@@ -91,6 +94,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Collection<Session> allSessions(@Context SecurityContext securityContext) throws Exception {
+        // increment the request counter metric
         requestCount.inc();
         // Access the authenticated user as a JsonWebToken
         JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
@@ -130,6 +134,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) throws Exception {
+        // increment the request counter metric
         requestCount.inc();
         final Optional<Session> result = sessionStore.find(sessionId);
         System.out.printf("retrieveSession(%s), exists=%s\n", sessionId, result.isPresent());
@@ -170,6 +175,7 @@ public class SessionResource {
     // Accumlate all method time in a SessionResource.methodTime timer metric
     @Timed
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) throws Exception {
+        // increment the request counter metric
         requestCount.inc();
         final Optional<Session> optSession = sessionStore.getSessions().stream()
                 .filter(s -> Objects.equals(s.getId(), sessionId))
