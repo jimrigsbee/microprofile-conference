@@ -21,7 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-//import java.util.logging.Logger;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -36,7 +35,6 @@ import javax.json.JsonValue;
  */
 public class Parser {
 
-    //private final Logger log = Logger.getLogger(Parser.class.getName());
     private final AtomicInteger id = new AtomicInteger(0);
     private final AtomicInteger speakerId = new AtomicInteger(0);
 
@@ -57,7 +55,7 @@ public class Parser {
             }
 
             // parse and link speakers and schedules
-            final List<Speaker> speakers = parseSpeaker(speakerResource);
+            final List<Speaker> speakers = parseSpeakers(speakerResource);
             final List<Schedule> schedules = new LinkedList<>();
 
             for (final Session session : sessions) {
@@ -70,9 +68,8 @@ public class Parser {
                     .findAny();
 
                 if(!matchingSpeaker.isPresent()) {
-                    throw new RuntimeException("Inconsistent data set: No speakret for Id "+ sessionSpeaker);
+                    throw new RuntimeException("Inconsistent data set: No speaker for Id "+ sessionSpeaker);
                 }
-
 
                 session.setSpeakers(Collections.singletonList(matchingSpeaker.get().getId()));
 
@@ -96,23 +93,26 @@ public class Parser {
         }
     }
 
-    private final List<Speaker> parseSpeaker(URL speakerResource) {
+    private final List<Speaker> parseSpeakers(URL speakerResource) {
         try {
+            // Create JSON reader for speaker.json file
             final JsonReaderFactory factory = Json.createReaderFactory(null);
             final JsonReader reader = factory.createReader(speakerResource.openStream());
 
+            // Read speaker JSON array
             final JsonArray items = reader.readArray();
 
-            // parse session objects
-            final List<Speaker> speaker = new LinkedList<>();
+            // parse speaker objects
+            final List<Speaker> speakers = new LinkedList<>();
 
             for (final JsonValue item : items) {
-                final Speaker s = new Speaker((JsonObject) item);
-                s.setId(String.valueOf(this.speakerId.incrementAndGet()));
-                speaker.add(s);
+                final Speaker speaker = new Speaker((JsonObject) item);
+                speaker.setId(String.valueOf(this.speakerId.incrementAndGet()));
+                speakers.add(speaker);
             }
-
-            return speaker;
+            reader.close();
+            
+            return speakers;
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse speaker.json");
         }
