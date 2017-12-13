@@ -81,7 +81,7 @@ public class EndpointServiceTest extends Assert {
         final String reset = webClient.path("/service/endpoints/").get(String.class);
         Assert.assertNotNull("Failed to reset", reset);
 
-        final Endpoints eps = webClient.path("conference")
+        final Endpoints eps = webClient.path("/list")
                 .get(Endpoints.class);
 
         Assert.assertNotNull("Failed to get Endpoints", eps);
