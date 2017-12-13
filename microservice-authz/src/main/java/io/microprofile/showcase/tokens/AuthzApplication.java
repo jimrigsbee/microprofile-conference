@@ -16,13 +16,10 @@ package io.microprofile.showcase.tokens;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import org.eclipse.microprofile.auth.LoginConfig;
-
 /**
  * The JAX-RS application class which sets the application root url and JWT security info
  * @author Scott Stark
  */
 @ApplicationPath("/")
-@LoginConfig(authMethod = "MP-JWT", realmName = "jwt-domain")
 public class AuthzApplication extends Application {
 }

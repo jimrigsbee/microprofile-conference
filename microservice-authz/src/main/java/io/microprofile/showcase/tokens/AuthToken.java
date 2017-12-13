@@ -40,5 +40,10 @@ public class AuthToken {
         this.id_token = id;
     }
 
-}
+    @Override
+    public String toString() {
+      String display = "Username: " + this.username + "Token:\n" + this.id_token;
+      return display;
+    }
 
+}

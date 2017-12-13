@@ -27,6 +27,8 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
 public class AuthzCheck implements HealthCheck {
     @Override
     public HealthCheckResponse call() {
+        // create a response named authz-check
+        // service is always up
         return HealthCheckResponse.named("authz-check")
             .up()
             .build();

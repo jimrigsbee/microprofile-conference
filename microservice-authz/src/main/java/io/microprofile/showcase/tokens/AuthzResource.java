@@ -15,7 +15,6 @@ package io.microprofile.showcase.tokens;
 
 import java.util.HashMap;
 
-import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -29,7 +28,6 @@ import org.eclipse.microprofile.jwt.Claims;
 /**
  */
 @Path("authz")
-@PermitAll
 @ApplicationScoped
 public class AuthzResource {
 
@@ -54,6 +52,7 @@ public class AuthzResource {
         String stoken = TokenUtils.generateTokenString(jsonResName, claims);
         System.out.printf("Created token: %s\n", stoken);
         AuthToken token = new AuthToken(credentials.getUsername(), stoken);
+
         return Response.ok(token).build();
     }
 
