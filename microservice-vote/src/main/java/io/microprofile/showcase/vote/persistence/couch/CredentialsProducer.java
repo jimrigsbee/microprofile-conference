@@ -25,19 +25,19 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @SuppressWarnings("cdi-ambiguous-dependency")
 @ApplicationScoped
 public class CredentialsProducer {
-    
-	@Inject
-	@ConfigProperty(name="COUCH_SERVICE", defaultValue="http://localhost:5984/")
+
+  	@Inject
+  	@ConfigProperty(name="COUCH_SERVICE", defaultValue="http://localhost:5984/")
     protected String resourceUrl;
 
-	@Inject
+	  @Inject
     @ConfigProperty(name="COUCH_USERNAME", defaultValue="admin")
     protected String resourceUsername;
-	
-	@Inject
+
+	  @Inject
     @ConfigProperty(name="COUCH_PASSWORD", defaultValue="redhat123")
     protected String resourcePassword;
-    
+
     @Produces
     public Credentials newCredentials() {
     	System.out.print("Injected: URL: "+ resourceUrl + " USERNAME: " + resourceUsername + " PASSWORD: "+ resourcePassword);

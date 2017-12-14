@@ -10,6 +10,7 @@ import io.microprofile.showcase.vote.model.SessionRating;
 
 public class CouchSessionFallbackHandler implements FallbackHandler<Collection<SessionRating>>{
 
+	// Fall back to sending an empty collection of session ratings 
 	@Override
 	public Collection<SessionRating> handle(ExecutionContext context) {
 	   	Collection<SessionRating> ratings = new ArrayList<>();
