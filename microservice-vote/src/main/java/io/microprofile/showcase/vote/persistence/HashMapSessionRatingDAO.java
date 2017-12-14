@@ -38,7 +38,7 @@ import io.microprofile.showcase.vote.model.SessionRating;
 
 @ApplicationScoped
 @NonPersistent
-@Timed(displayName="Data Layer Times", description="The time it takes this DAO method to complete, as a histogram.")
+//TODO add metric timer
 public class HashMapSessionRatingDAO implements SessionRatingDAO {
 
     private ConcurrentMap<String, SessionRating> allRatings = new ConcurrentHashMap<String, SessionRating>();
@@ -62,7 +62,7 @@ public class HashMapSessionRatingDAO implements SessionRatingDAO {
                         return new SessionRating(bootstrap.getId(), UUID.randomUUID().toString(), rating);
                     })
                     .collect(Collectors.toList());
-        
+
             int i=0;
             for(SessionRating rating : bootstrapData) {
                 String id = String.valueOf(i);

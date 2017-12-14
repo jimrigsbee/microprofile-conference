@@ -32,7 +32,7 @@ import io.microprofile.showcase.vote.model.Attendee;
 @ApplicationScoped
 @NonPersistent
 @Health
-@Timed(displayName="Data Layer Times", description="The time it takes this DAO method to complete, as a histogram.")
+//TODO add metric timer
 public class HashMapAttendeeDAO implements AttendeeDAO, HealthCheck {
 
     private ConcurrentMap<String, Attendee> attendees = new ConcurrentHashMap<String, Attendee>();
