@@ -49,6 +49,7 @@ import io.microprofile.showcase.vote.persistence.couch.CouchConnection.RequestTy
 @Timeout(1000)
 // Provide a health check method
 @Health
+@Timed(displayName="Data Layer Times", description="The time it takes this DAO method to complete, as a histogram.")
 public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
 
     @Inject
@@ -153,7 +154,7 @@ public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
 
 	@Override
 	public HealthCheckResponse call() {
-    // Send a health check response based on whether we are connected to CouchDB or not 
+    // Send a health check response based on whether we are connected to CouchDB or not
 		HealthCheckResponseBuilder b = HealthCheckResponse.named(CouchAttendeeDAO.class.getSimpleName());
 		return connected  ? b.up().build()  : b.down().build();
 	}

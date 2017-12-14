@@ -44,12 +44,15 @@ import io.microprofile.showcase.vote.persistence.Persistent;
 import io.microprofile.showcase.vote.persistence.SessionRatingDAO;
 import io.microprofile.showcase.vote.persistence.couch.CouchConnection.RequestType;
 
+import org.eclipse.microprofile.metrics.annotation.Timed;
+
 @ApplicationScoped
 @Persistent
 // Default time out is 1 second
 @Timeout(1000)
 // Implement a health check
 @Health
+@Timed(displayName="Data Layer Times", description="The time it takes this DAO method to complete, as a histogram.")
 public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
 
     @Inject
