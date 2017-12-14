@@ -49,7 +49,6 @@ import io.microprofile.showcase.vote.persistence.couch.CouchConnection.RequestTy
 @Timeout(1000)
 // Provide a health check method
 @Health
-//TODO add metric timer
 public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
 
     @Inject

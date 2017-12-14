@@ -52,7 +52,6 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 @Timeout(1000)
 // Implement a health check
 @Health
-//TODO add metric timer
 public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
 
     @Inject
