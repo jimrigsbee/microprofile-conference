@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.MediaType;
 import java.net.URL;
+import java.io.File;
 
 /**
  * Arquillian will start the container, deploy all @Deployment bundles, then run all the @Test methods.
@@ -55,9 +56,18 @@ public class EndpointServiceTest extends Assert {
      */
     @Deployment(testable = false)
     public static WebArchive createDeployment() throws Exception {
-        return ShrinkWrap.create(WebArchive.class).addClasses(Application.class, Endpoint.class, Endpoints.class, EndpointService.class)
-                .addAsWebInfResource("conference.properties", "conference.properties")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+
+        WebArchive war = ShrinkWrap.create(WebArchive.class);
+        try {
+          war.addClasses(Application.class, Endpoint.class, Endpoints.class, EndpointService.class)
+              .addAsWebInfResource(new File("src/main/local/webapp/WEB-INF/conference.properties"), "conference.properties")
+              .addAsWebInfResource(new File("src/main/local/webapp/WEB-INF/openshift.properties"), "openshift.properties")
+              .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+        } catch(Exception e) {
+          System.out.println(e);
+        }
+        System.out.println(war.toString(true));
+        return war;
     }
 
     /**
@@ -73,7 +83,7 @@ public class EndpointServiceTest extends Assert {
 
     @Test
     @RunAsClient
-    public void getEndpoints() throws Exception {
+    public void getConferenceEndpoints() throws Exception {
 
         final WebClient webClient = WebClient.create(this.url.toURI());
         webClient.accept(MediaType.APPLICATION_JSON);

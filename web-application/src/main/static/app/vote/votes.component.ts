@@ -26,6 +26,13 @@ export class VotesComponent implements OnInit {
     private chart: UIChart;
 
     constructor(private router: Router, private voteService: VoteService, private endpointsService: EndpointsService) {
+        this.endpointsService.getEndpoint("vote-health")
+            .then(ep => this.setHealthEP(ep))
+            .catch(this.handleError);
+
+        this.endpointsService.getEndpoint("vote-metrics")
+            .then(ep => this.setMetricEP(ep))
+            .catch(this.handleError);
     }
 
     ngOnInit(): void {
@@ -42,23 +49,16 @@ export class VotesComponent implements OnInit {
                 position: 'right'
             }
         };
-
-        this.endpointsService.getEndpoint("vote-health")
-            .then(ep => this.setHealthEP(ep))
-            .catch(this.handleError);
-
-        this.endpointsService.getEndpoint("vote-metrics")
-            .then(ep => this.setMetricEP(ep))
-            .catch(this.handleError);
-
     }
 
     setHealthEP(ep: Endpoint) {
         this.healthendpoint = ep.url;
+        console.info('vote health link is ' + this.healthendpoint);
     }
 
     setMetricEP(ep: Endpoint) {
         this.metricsendpoint = ep.url;
+        console.info('vote metric link is ' + this.metricsendpoint);
     }
 
     getVotes(): void {
