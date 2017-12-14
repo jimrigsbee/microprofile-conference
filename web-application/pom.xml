@@ -105,9 +105,9 @@
                       <image>
                           <name>showcase/${project.artifactId}:${project.version}</name>
                           <build>
-                              <from>jboss-eap-7/eap70-openshift</from>
+                              <from><!-- FIXME --></from>
                               <assembly>
-                                  <basedir>/deployments</basedir>
+                                  <basedir><!-- FIXME --></basedir>
                                   <descriptorRef>artifact</descriptorRef>
                               </assembly>
                           </build>
