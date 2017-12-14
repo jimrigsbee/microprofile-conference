@@ -52,7 +52,6 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 @Timeout(1000)
 // Implement a health check
 @Health
-@Timed(displayName="Data Layer Times", description="The time it takes this DAO method to complete, as a histogram.")
 public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
 
     @Inject
@@ -71,6 +70,8 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
     private boolean connected;
 
     @PostConstruct
+    // the following causes the app not to deploy on Liberty
+    // @Timed(displayName="Couch DB Connection time", description="How long it takes to connect to couchdb")
     public void connect() {
         this.connected = couch.connect("ratings");
 
