@@ -86,13 +86,7 @@
             <version>${project.version}</version>
         </dependency>
         <!-- Include appropriate fractions for microprofile -->
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile-jwt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>microprofile-health</artifactId>
-        </dependency>
+
+
     </dependencies>
 </project>

@@ -23,15 +23,14 @@ import org.eclipse.microprofile.health.HealthCheckResponse;
  * The health check for the session application
  * Scope is application wide
  */
-@Health
+
 @ApplicationScoped
-public class AuthzCheck implements HealthCheck {
-    @Override
+//TODO Implement the health check interface
+public class AuthzCheck {
+
     public HealthCheckResponse call() {
-        // create a response named authz-check
+        //TODO create a response named authz-check
         // service is always up
-        return HealthCheckResponse.named("authz-check")
-            .up()
-            .build();
+        return null;
     }
 }

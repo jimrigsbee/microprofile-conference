@@ -24,14 +24,13 @@ import javax.ws.rs.ext.Provider;
 /**
  * @author Ken Finnigan
  */
-@Provider
-public class CORSFilter implements ContainerResponseFilter {
-    @Override
+//TODO Identify this class as a JAX-RS provider
+//TODO implement the ContainerResponseFilter interface
+public class CORSFilter {
+
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
-        responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
-        responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
-        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        responseContext.getHeaders().add("Access-Control-Max-Age", "1209600");
+        //TODO add the other headers given in the lab instructions, use the above line as a model 
+
     }
 }

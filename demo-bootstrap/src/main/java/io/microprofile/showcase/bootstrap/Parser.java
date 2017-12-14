@@ -96,22 +96,15 @@ public class Parser {
     private final List<Speaker> parseSpeakers(URL speakerResource) {
         try {
             // Create JSON reader for speaker.json file
-            final JsonReaderFactory factory = Json.createReaderFactory(null);
-            final JsonReader reader = factory.createReader(speakerResource.openStream());
 
             // Read speaker JSON array
-            final JsonArray items = reader.readArray();
 
             // parse speaker objects
             final List<Speaker> speakers = new LinkedList<>();
 
-            for (final JsonValue item : items) {
-                final Speaker speaker = new Speaker((JsonObject) item);
-                speaker.setId(String.valueOf(this.speakerId.incrementAndGet()));
-                speakers.add(speaker);
-            }
-            reader.close();
-            
+            // close the reader
+
+
             return speakers;
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse speaker.json");
