@@ -56,7 +56,10 @@ public class CouchConnection {
             this.url = credentials.getUrl();
             this.usernameAndPassword = credentials.getUsername() + ":" + credentials.getPassword();
             this.authorizationHeaderValue = "Basic " + java.util.Base64.getEncoder().encodeToString(usernameAndPassword.getBytes());
-
+            
+            Response response = null;
+            Response putResponse = null;
+            
             try {
                 this.client = ClientBuilder.newClient();
                 this.client.register(CouchIDProvider.class);
@@ -68,14 +71,14 @@ public class CouchConnection {
                 databaseTarget = databaseTarget.path(dbName);
                 Invocation.Builder builder = databaseTarget.request("application/json");
                 builder = builder.header(authorizationHeaderName, authorizationHeaderValue);
-                Response response = builder.get();
+                response = builder.get();
 
                 int code = response.getStatus();
 
                 if (code != 200) {
                     if (code == 404) {
 
-                        Response putResponse = builder.put(Entity.json(""));
+                        putResponse = builder.put(Entity.json(""));
 
                         code = putResponse.getStatus();
 
@@ -103,6 +106,13 @@ public class CouchConnection {
             } catch (Throwable t) {
                 t.printStackTrace();
                 System.out.println("Unable to connect to couch database: " + dbName);
+            } finally {
+            	if(response != null) {
+            		response.close();
+            	}
+            	if(putResponse != null) {
+            		putResponse.close();
+            	}
             }
         }
         return connected;

@@ -40,7 +40,7 @@ public class CredentialsProducer {
 
     @Produces
     public Credentials newCredentials() {
-    	System.out.print("Injected: URL: "+ resourceUrl + " USERNAME: " + resourceUsername + " PASSWORD: "+ resourcePassword);
+    	System.out.println("Injected: URL: "+ resourceUrl + " USERNAME: " + resourceUsername + " PASSWORD: "+ resourcePassword);
         Credentials credentials = new Credentials(resourceUsername, resourcePassword, resourceUrl);
 
         return credentials;
