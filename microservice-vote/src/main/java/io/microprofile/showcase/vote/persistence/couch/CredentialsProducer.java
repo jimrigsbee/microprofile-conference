@@ -26,17 +26,10 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class CredentialsProducer {
 
-  	@Inject
-  	@ConfigProperty(name="COUCH_SERVICE", defaultValue="http://localhost:5984/")
-    protected String resourceUrl;
-
-	  @Inject
-    @ConfigProperty(name="COUCH_USERNAME", defaultValue="admin")
-    protected String resourceUsername;
-
-	  @Inject
-    @ConfigProperty(name="COUCH_PASSWORD", defaultValue="redhat123")
-    protected String resourcePassword;
+    //TODO inject these settings
+    protected String resourceUrl = "http://localhost:5984/";
+    protected String resourceUsername = "admin";
+    protected String resourcePassword = "redhat123";
 
     @Produces
     public Credentials newCredentials() {

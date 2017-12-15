@@ -48,8 +48,8 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 
 @ApplicationScoped
 @Persistent
-// Default time out is 1 second
-@Timeout(1000)
+//TODO Default time out is 1 second
+
 // Implement a health check
 @Health
 public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
@@ -118,9 +118,8 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
         return sessionRating;
     }
 
-    // invoke async and limit concurrent invocations to 3
-    @Asynchronous
-    @Bulkhead(3)
+    //TODO invoke async and limit concurrent invocations to 3
+
     private Future<SessionRating> getRatingAsync(String id) {
     	return CompletableFuture.completedFuture(getRating(id));
     }
@@ -135,8 +134,8 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
         return querySessionRating("attendee", attendeeId);
     }
 
-    // Retry once when any exception is thrown
-    @Retry(maxRetries = 1, retryOn=Exception.class)
+    //TODO Retry once when any exception is thrown
+
     private Collection<SessionRating> querySessionRating(String query, String value) {
 
         AllDocs allDocs = couch.request("_design/ratings/_view/" + query, "key", "\"" + value + "\"", RequestType.GET, null, AllDocs.class, null, 200);
@@ -160,14 +159,15 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
 
 
     @Override
-    // Retry up to 5 times with a 3 second delay in between tries
+    //TODO Retry up to 5 times with a 3 second delay in between tries
     @Retry(maxRetries = 5, delay=3000, delayUnit=ChronoUnit.MILLIS)
-    // Fallback to sending an empty session ratings collection
-    @Fallback(CouchSessionFallbackHandler.class)
-    // Open circuit when the failure ratio is 75%, keep the circuit open for 1 second
+    //TODO Fallback to sending an empty session ratings collection
+    // Use the CouchSessionFallbackHandler class
+
+    //TODO Open circuit when the failure ratio is 75%, keep the circuit open for 1 second
     // close the circuit when we get 10 successful invocations
     // rolling window of consecutive invocations is 4
-    @CircuitBreaker(successThreshold = 10, requestVolumeThreshold = 4, failureRatio=0.75, delay = 1000)
+
     public Collection<SessionRating> getAllRatings() {
 
         AllDocs allDocs = couch.request("_design/ratings/_view/all", RequestType.GET, null, AllDocs.class, null, 200);
@@ -182,8 +182,8 @@ public class CouchSessionRatingDAO implements SessionRatingDAO, HealthCheck {
     }
 
     @Override
-    // Time out after 5 seconds
-    @Timeout(5000)
+    //TODO Time out after 5 seconds
+
     public void clearAllRatings() {
         AllDocs allDocs = couch.request("_design/ratings/_view/all", RequestType.GET, null, AllDocs.class, null, 200);
 

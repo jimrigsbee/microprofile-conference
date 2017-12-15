@@ -31,9 +31,9 @@ import io.microprofile.showcase.vote.model.Attendee;
 
 @ApplicationScoped
 @NonPersistent
-@Health
+//TODO implement a health check
 //TODO add metric timer
-public class HashMapAttendeeDAO implements AttendeeDAO, HealthCheck {
+public class HashMapAttendeeDAO implements AttendeeDAO {
 
     private ConcurrentMap<String, Attendee> attendees = new ConcurrentHashMap<String, Attendee>();
 
@@ -75,10 +75,5 @@ public class HashMapAttendeeDAO implements AttendeeDAO, HealthCheck {
     public boolean isAccessible() {
         return true;
     }
-
-	@Override
-	public HealthCheckResponse call() {
-		return HealthCheckResponse.named("HashMap").up().build();
-	}
-
+//TODO implement a healthcheck
 }

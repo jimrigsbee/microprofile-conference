@@ -45,8 +45,8 @@ import io.microprofile.showcase.vote.persistence.couch.CouchConnection.RequestTy
 
 @ApplicationScoped
 @Persistent
-// Set default timeout to 1 second
-@Timeout(1000)
+//TODO Set default timeout to 1 second
+
 // Provide a health check method
 @Health
 public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
@@ -92,8 +92,8 @@ public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
     }
 
     @Override
-    // Time out after 5 seconds
-    @Timeout(5000)
+    //TODO Time out after 5 seconds
+
     public Collection<Attendee> getAllAttendees() {
         AllDocs allDocs = couch.request("_design/attendees/_view/all", RequestType.GET, null, AllDocs.class, null, 200);
 
@@ -114,15 +114,15 @@ public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
 
     // Make invocation async
     @Asynchronous
-    // Limit concurrent requests to 3
-    @Bulkhead(3)
+    //TODO Limit concurrent requests to 3
+
     private Future<Attendee> getAttendeeAsync(String id) {
     	return CompletableFuture.completedFuture(getAttendee(id));
     }
 
     @Override
-    // Time out after 5 seconds
-    @Timeout(5000)
+    //TODO Time out after 5 seconds
+
     public void clearAllAttendees() {
         AllDocs allDocs = couch.request("_design/attendees/_view/all", RequestType.GET, null, AllDocs.class, null, 200);
 
@@ -132,8 +132,8 @@ public class CouchAttendeeDAO implements AttendeeDAO, HealthCheck {
     }
 
     @Override
-    // Retry once when any exception is thrown
-    @Retry(maxRetries = 1, retryOn = Exception.class)
+    //TODO Retry once when any exception is thrown
+
     public Attendee getAttendee(String id) {
         Attendee attendee = couch.request(id, RequestType.GET, null, Attendee.class, null, 200, true);
         return attendee;
