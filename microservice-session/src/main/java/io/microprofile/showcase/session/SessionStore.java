@@ -33,17 +33,16 @@ import io.microprofile.showcase.bootstrap.SessionFactory;
  * @author Heiko Braun
  * @since 16/09/16
  */
-@ApplicationScoped
+//TODO Scope this bean so there is only one for the application
 public class SessionStore {
 
-    @Inject
+    //TODO Avoid a null pointer exception here!!!
     BootstrapData bootstrapData;
 
     // Get the desired state of loading default data
     // Use MP 1.2 configuration
-    @Inject
-    @ConfigProperty(name = "loadSampleData", defaultValue = "true")
-    private Boolean loadSampleData;
+    //TODO add two annotations here, make injection name the same as the attribute name
+    private Boolean loadSampleData = true;
 
     private final ConcurrentHashMap<String, Session> storage = new ConcurrentHashMap<>();
 
@@ -53,11 +52,12 @@ public class SessionStore {
         return session;
     }
 
-    @PostConstruct
+    //TODO Make sure this gets called once when the bean is created
     private void initStore() {
       if (loadSampleData) {
         Logger.getLogger(SessionStore.class.getName()).log(Level.INFO, "Initialise sessions from bootstrap data");
 
+        //TODO notice the cool Java 8 lamda below
         bootstrapData.getSessions()
             .forEach(bootstrap -> storage.put(bootstrap.getId(), SessionFactory.fromBootstrap(bootstrap)));
       } else {

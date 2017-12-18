@@ -23,8 +23,8 @@ import org.eclipse.microprofile.auth.LoginConfig;
  * @author Iain Duncan
  */
 @ApplicationPath("/")
-// Configure the login method and realm 
-@LoginConfig(authMethod = "MP-JWT", realmName = "jwt-domain")
+//TODO Configure the login method and realm 
+
 public class SessionApplication extends Application {
 
 }

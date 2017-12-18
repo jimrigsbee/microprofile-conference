@@ -96,19 +96,23 @@ public class SessionResource {
     public Collection<Session> allSessions(@Context SecurityContext securityContext) throws Exception {
         // increment the request counter metric
         requestCount.inc();
-        // Access the authenticated user as a JsonWebToken
-        JsonWebToken jwt = (JsonWebToken) securityContext.getUserPrincipal();
+        //TODO SECURITY Access the authenticated user as a JsonWebToken from the SecurityContext
+        // cast the token appropriately
+        JsonWebToken jwt = null;
         if (jwt == null) {
-            // User was not authenticated
+            // User was not authenticated, return an empty list
             return Collections.emptyList();
         }
-        String userName = jwt.getName();
+        //TODO SECURITY get the userName from the token
+        String userName = null;
         boolean isVIP = securityContext.isUserInRole("VIP");
         System.out.printf("allSessions(%s), isVIP=%s, User token: %s\n", userName, isVIP, jwt);
         // Check if the user has a session_time_preference in the token
-        Optional<String> sessionTimePref = jwt.claim("session_time_preference");
+        //TODO SECURITY get the "session_time_preference" claim from the token
+        Optional<String> sessionTimePref = null;
         if(sessionTimePref.isPresent()) {
             // Create a session filter for the time preference...
+            // not implemented yet in this sample application 
         }
 
         // If the user does NOT have a VIP role, filter out the VIP sessions

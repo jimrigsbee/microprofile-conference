@@ -17,14 +17,18 @@ import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 @Health
 @ApplicationScoped
 public class SessionCheck implements HealthCheck {
+  
     @Inject
     private SessionStore sessionStore;
 
     // Get the name for the session count health data from configuration
     // Use MP 1.2 configuration
-    @Inject
-    @ConfigProperty(name = "sessionCountName", defaultValue = "sessionCount")
-    private String sessionCountName;
+
+    //TODO add two annotations to configure the name of the session count
+    // to be displayed in the health check output.  Make the config name
+    // the same as the attribute
+
+    private String sessionCountName = "something bogus";
 
     @Override
     public HealthCheckResponse call() {
@@ -32,14 +36,13 @@ public class SessionCheck implements HealthCheck {
         // Return data:
         // - count of sessions contained in the data store
         // - date the health check occurred as 'lastCheckDate'
-        // The application is 'up' is session count > 0 otherwise 'down'
+        //TODO The application is 'up' is session count > 0 otherwise 'down'
         long sessionCount = sessionStore.getSessions().size();
         HealthCheckResponseBuilder healthCheckResponse = HealthCheckResponse.named("sessions-check")
-            .withData(sessionCountName, sessionCount)
+            .withData(sessionCountName, sessionCount) // note the customizable name
             .withData("lastCheckDate", new Date().toString());
 
-
-        return (sessionCount > 0) ? healthCheckResponse.up().build()
-          : healthCheckResponse.down().build();
+        //TODO change this logic to indicate the service is down if the session count = 0
+        return healthCheckResponse.up().build();
     }
 }
