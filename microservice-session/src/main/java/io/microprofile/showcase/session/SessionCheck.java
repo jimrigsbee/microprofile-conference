@@ -17,7 +17,7 @@ import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
 @Health
 @ApplicationScoped
 public class SessionCheck implements HealthCheck {
-  
+
     @Inject
     private SessionStore sessionStore;
 
@@ -28,7 +28,7 @@ public class SessionCheck implements HealthCheck {
     // to be displayed in the health check output.  Make the config name
     // the same as the attribute
 
-    private String sessionCountName = "something bogus";
+    private String sessionCountName = "sessionCount";
 
     @Override
     public HealthCheckResponse call() {
