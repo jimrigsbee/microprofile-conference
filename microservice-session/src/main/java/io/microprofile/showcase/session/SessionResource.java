@@ -51,8 +51,8 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
  * @author Scott Stark
  */
 @Path("sessions")
-// Permit all methods to be invoked
-@PermitAll
+//TODO Security Permit all methods to be invoked
+
 @ApplicationScoped
 public class SessionResource {
 
@@ -65,8 +65,7 @@ public class SessionResource {
     /**
      * The application metrics registry that allows access to any metric to be accessed/created
      */
-   @Inject
-   private MetricRegistry metrics;
+    //TODO inject an instance of MetricRegistry called "metrics"
 
     /**
      * The store of sessions
@@ -78,6 +77,8 @@ public class SessionResource {
     void init() {
         Collection<Session> sessions = sessionStore.getSessions();
         System.out.printf("SessionResource.init, session count=%d\n", sessions.size());
+        //TODO Metrics uncomment this block of code and study it
+/*
         // Create a metrics histogram of the session abstract word counts
         Metadata metadata = new Metadata(SessionResource.class.getName()+".abstractWordCount", MetricType.HISTOGRAM);
         metadata.setDescription("Word count histogram for the session abstracts");
@@ -87,15 +88,16 @@ public class SessionResource {
            String[] words = session.getAbstract().split("\\s+");
            abstractWordCount.update(words.length);
         }
+*/
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    // Accumlate all method time in a SessionResource.methodTime timer metric
-    @Timed
+    //TODO Accumlate all method time in a SessionResource.methodTime timer metric
+
     public Collection<Session> allSessions(@Context SecurityContext securityContext) throws Exception {
-        // increment the request counter metric
-        requestCount.inc();
+        //TODO increment the request counter metric
+
         //TODO SECURITY Access the authenticated user as a JsonWebToken from the SecurityContext
         // cast the token appropriately
         JsonWebToken jwt = null;
@@ -112,7 +114,7 @@ public class SessionResource {
         Optional<String> sessionTimePref = null;
         if(sessionTimePref.isPresent()) {
             // Create a session filter for the time preference...
-            // not implemented yet in this sample application 
+            // not implemented yet in this sample application
         }
 
         // If the user does NOT have a VIP role, filter out the VIP sessions
@@ -135,11 +137,11 @@ public class SessionResource {
     @GET
     @Path("/{sessionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    // Accumlate all method time in a SessionResource.methodTime timer metric
-    @Timed
+    //TODO Accumlate all method time in a SessionResource.methodTime timer metric
+
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) throws Exception {
-        // increment the request counter metric
-        requestCount.inc();
+        //TODO increment the request counter metric
+
         final Optional<Session> result = sessionStore.find(sessionId);
         System.out.printf("retrieveSession(%s), exists=%s\n", sessionId, result.isPresent());
         if (result.isPresent())
@@ -176,11 +178,11 @@ public class SessionResource {
     @GET
     @Path("/{sessionId}/speakers")
     @Produces(MediaType.APPLICATION_JSON)
-    // Accumlate all method time in a SessionResource.methodTime timer metric
-    @Timed
+    //TODO Accumlate all method time in a SessionResource.methodTime timer metric
+
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) throws Exception {
-        // increment the request counter metric
-        requestCount.inc();
+        //TODO increment the request counter metric
+        
         final Optional<Session> optSession = sessionStore.getSessions().stream()
                 .filter(s -> Objects.equals(s.getId(), sessionId))
                 .findFirst();
