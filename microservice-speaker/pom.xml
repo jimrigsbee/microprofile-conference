@@ -118,6 +118,7 @@
                 <configuration>
                     <warFile>${project.build.directory}/${warfile.name}.war</warFile>
                     <tomeeClassifier>webprofile</tomeeClassifier>
+                    <execFile>${project.build.directory}/${project.artifactId}-exec.jar</execFile>
                 </configuration>
                 <executions>
                     <execution>

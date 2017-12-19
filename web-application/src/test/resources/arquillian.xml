@@ -31,7 +31,7 @@ The ports are communicated to the test via the @ArquillianResource annotation
 If this file is deleted the default Tomcat 8080 port is used
 -->
 <arquillian>
-  <container qualifier="tomee" default="true">
+  <container qualifier="tomee-embedded" default="true">
     <configuration>
       <property name="httpPort">-1</property>
       <property name="stopPort">-1</property>

@@ -61,7 +61,6 @@ public class EndpointServiceTest extends Assert {
         try {
           war.addClasses(Application.class, Endpoint.class, Endpoints.class, EndpointService.class)
               .addAsWebInfResource(new File("src/main/local/webapp/WEB-INF/conference.properties"), "conference.properties")
-              .addAsWebInfResource(new File("src/main/local/webapp/WEB-INF/openshift.properties"), "openshift.properties")
               .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         } catch(Exception e) {
           System.out.println(e);
