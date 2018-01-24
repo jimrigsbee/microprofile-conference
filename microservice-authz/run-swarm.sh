@@ -1,2 +1,2 @@
-#!/bin/sh
-/usr/bin/java -jar target/microservice-authz-swarm.jar -Dswarm.http.port=5055 -Dswarm.management.http.disable=true $@
+#!/bin/bash
+mvn clean package -Pwildfly -DskipTests wildfly-swarm:run -Dswarm.http.port=5055 -Dswarm.management.http.disable=true
