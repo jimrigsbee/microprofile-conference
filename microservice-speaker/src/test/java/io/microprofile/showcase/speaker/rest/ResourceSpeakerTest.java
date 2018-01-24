@@ -13,11 +13,19 @@
  */
 package io.microprofile.showcase.speaker.rest;
 
-import io.microprofile.showcase.speaker.domain.ProducerVenue;
-import io.microprofile.showcase.speaker.domain.Venue;
-import io.microprofile.showcase.speaker.domain.VenueJavaOne2016;
-import io.microprofile.showcase.speaker.model.Speaker;
-import io.microprofile.showcase.speaker.persistence.SpeakerDAO;
+import java.io.File;
+import java.net.URL;
+import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -29,17 +37,14 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.arquillian.CreateSwarm;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.net.URL;
-import java.util.Set;
-import java.util.logging.Logger;
+import io.microprofile.showcase.speaker.domain.ProducerVenue;
+import io.microprofile.showcase.speaker.domain.Venue;
+import io.microprofile.showcase.speaker.domain.VenueJavaOne2016;
+import io.microprofile.showcase.speaker.model.Speaker;
+import io.microprofile.showcase.speaker.persistence.SpeakerDAO;
 
 @RunWith(Arquillian.class)
 public class ResourceSpeakerTest {
@@ -67,6 +72,14 @@ public class ResourceSpeakerTest {
                         bootstrapLib
                 );
     }
+    
+    @CreateSwarm
+    public static Swarm newContainer() throws Exception {
+		Properties properties = new Properties();
+		properties.put("swarm.http.port", 8080);
+		Swarm swarm = new Swarm(properties);
+		return swarm.withProfile("defaults");
+	}
 
     @ArquillianResource
     private URL url;

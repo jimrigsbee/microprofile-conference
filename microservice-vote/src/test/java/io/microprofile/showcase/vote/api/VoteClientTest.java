@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.microprofile.showcase.vote.it.client;
+package io.microprofile.showcase.vote.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -33,6 +33,8 @@ import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.arquillian.CreateSwarm;
 
 import io.microprofile.showcase.vote.ArquillianTestUtils;
+import io.microprofile.showcase.vote.it.client.AttendeeClientUtility;
+import io.microprofile.showcase.vote.it.client.RatingClientUtility;
 import io.microprofile.showcase.vote.model.Attendee;
 import io.microprofile.showcase.vote.model.SessionRating;
 

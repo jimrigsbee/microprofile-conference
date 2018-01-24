@@ -1,11 +1,23 @@
 <div class="container row rounded flex-items-xs-middle" style="background: rgba(138, 94, 175, 0.4); color: white;">
     <label class="col-xs-3">{{principalName()}}:</label>
-    <div class="col-xs">
-        <input type="checkbox" id="VIP" [checked]="isVIP()"/><label for="VIP">VIP</label>
-        <input type="checkbox" id="Alumni" [checked]="isAlumni()"/><label for="Alumni">Alumni</label>
-        <input type="checkbox" id="Registered" [checked]="isRegistered()"/><label for="Registered">Registered</label>
+    <div class="col-xs-3">
+        <input type="checkbox" id="VIP" [checked]="isVIP()" disabled=true/><label for="VIP">VIP</label>
+        <input type="checkbox" id="Alumni" [checked]="isAlumni()" disabled=true/><label for="Alumni">Alumni</label>
+        <input type="checkbox" id="Registered" [checked]="isRegistered()" disabled=true/><label for="Registered">Registered</label>
     </div>
-    <div class="col-xs-4"><label for="JWTExp">Expires In:</label>
+    <div class="col-xs-3"><label for="JWTExp">Expires In:</label>
     <timer id="JWTExp" [countdown]=true [ticks]=secondsToExpiration() [callback]="getExpiredCallback()"></timer>
     </div>
+    <div class="col-xs-3">
+      <button (click)="logout()" class="btn btn-primary">Logout</button>
+      <button (click)="showJwtDialog = !showJwtDialog" class="btn btn-primary">Show JWT</button>
+      <app-dialog [(visible)]="showJwtDialog">
+          <h1>JWT Claims</h1>
+          <pre>
+              {{auth.getJwtClaims() | json}}
+          </pre>
+          <button (click)="showJwtDialog = !showJwtDialog" class="btn">Dismiss</button>
+      </app-dialog>
+    </div>
+
 </div>

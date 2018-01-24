@@ -32,6 +32,7 @@ public class Speaker implements Serializable {
 
     private static final long serialVersionUID = -8693770048623415961L;
     private String id;
+    private String title;
     private String nameFirst;
     private String nameLast;
     private String organization;
@@ -50,7 +51,15 @@ public class Speaker implements Serializable {
         this.id = id;
     }
 
-    public String getNameFirst() {
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getNameFirst() {
         return this.nameFirst;
     }
 
@@ -116,6 +125,7 @@ public class Speaker implements Serializable {
 
         return new EqualsBuilder()
                 .append(this.id, speaker.id)
+                .append(this.title, speaker.title)
                 .append(this.nameFirst, speaker.nameFirst)
                 .append(this.nameLast, speaker.nameLast)
                 .append(this.organization, speaker.organization)
@@ -129,6 +139,7 @@ public class Speaker implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(this.id)
+                .append(this.title)
                 .append(this.nameFirst)
                 .append(this.nameLast)
                 .append(this.organization)
@@ -142,6 +153,7 @@ public class Speaker implements Serializable {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", this.id)
+                .append("title",this.title)
                 .append("nameFirst", this.nameFirst)
                 .append("nameLast", this.nameLast)
                 .append("organization", this.organization)

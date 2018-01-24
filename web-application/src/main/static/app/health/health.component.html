@@ -14,16 +14,21 @@
 
 <div class="container p-a-1 rounded" style="background: rgba(20, 173, 175, 0.4)">
     <div class="row">
-        <div class="col-xs">
-            <button (click)="showDialog = !showDialog" class="btn btn-primary">Show Health Checks</button>
-            <button (click)="refreshSessionHealth()" class="btn btn-primary" [disabled]="!hasSessionHealth()">Refresh Health Checks</button>
-            <app-dialog [(visible)]="showDialog">
+        <div class="col-xs" style="color: white">
+
+            <button (click)="refreshHealth()" class="btn btn-primary">Refresh Health Checks</button>
                 <h1>Health Checks</h1>
-                <pre>
-                    {{healthCheck | json}}
-                </pre>
-                <button (click)="showDialog = !showDialog" class="btn">Dismiss</button>
-            </app-dialog>
+                <h3>Session</h3>
+                <code>{{sessionHealthCheck | json}}</code>
+                <h3>Authz</h3>
+                <code>{{authzHealthCheck | json}}</code>
+                <h3>Speaker</h3>
+                <code>{{speakerHealthCheck | json}}</code>
+                <h3>Schedule</h3>
+                <code>{{scheduleHealthCheck | json}}</code>
+                <h3>Vote</h3>
+                <code>{{voteHealthCheck | json}}</code>
+
         </div>
     </div>
 </div>

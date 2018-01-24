@@ -15,24 +15,11 @@
 <div class="container p-a-1" style="background: white">
     <div class="row">
         <div class="col-xs">
-            <h4>{{title}}
-                <small *ngIf="undefined == speaker" class="text-muted">Search for your favourite session</small>
-            </h4>
+            <h4>{{title}}</h4>
         </div>
         <div *ngIf="undefined == speaker" class="col-xs">
-            <input #sessionSearch type="text" class="form-control" placeholder="[Session name]"
+            <input #sessionSearch type="text" class="form-control" placeholder="Search for your favourite session..."
                    (keyup)="onSearch(sessionSearch.value)">
-        </div>
-        <div *ngIf="undefined == speaker && auth.loggedIn()" class="col-xs">
-            <button (click)="logout()" class="btn btn-primary">Logout</button>
-            <button (click)="showJwtDialog = !showJwtDialog" class="btn btn-primary">Show JWT</button>
-            <app-dialog [(visible)]="showJwtDialog">
-                <h1>JWT Claims</h1>
-                <pre>
-                    {{auth.getJwtClaims() | json}}
-                </pre>
-                <button (click)="showJwtDialog = !showJwtDialog" class="btn">Dismiss</button>
-            </app-dialog>
         </div>
     </div>
 

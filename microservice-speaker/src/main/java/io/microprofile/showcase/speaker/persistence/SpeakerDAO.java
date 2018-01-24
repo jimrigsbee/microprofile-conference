@@ -60,7 +60,7 @@ public class SpeakerDAO {
         final Set<Speaker> featured = new HashSet<>(0);
 
         for (final Venue venue : this.venues) {
-            featured.addAll(venue.getSpeakers());
+//            featured.addAll(venue.getSpeakers());
         }
 
         final AtomicInteger idc = new AtomicInteger(0);
@@ -81,8 +81,9 @@ public class SpeakerDAO {
                     sp.setNameFirst(names[0].trim());
                     sp.setNameLast(names[1].trim());
                     sp.setOrganization(bootstrap.getCompany());
-                    sp.setBiography(bootstrap.getJobTitle());
-
+                    sp.setTitle(bootstrap.getTitle());
+                    sp.setBiography("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam commodo eget nisl eu fermentum. Phasellus tellus elit, eleifend vel bibendum quis, hendrerit sit amet enim. Donec nulla tortor, consectetur sed massa sed, luctus aliquet diam. Fusce vitae iaculis risus, sed consectetur dolor. Donec mollis rhoncus nisl porttitor ullamcorper. Suspendisse egestas diam ornare massa venenatis efficitur. Mauris neque risus, facilisis vel consectetur at, tristique nec eros. Sed scelerisque velit eget pulvinar rutrum. Quisque accumsan ligula at dui commodo, eu fringilla metus condimentum. Etiam facilisis tempus mi a egestas. Vivamus vitae ullamcorper lorem. Fusce vitae diam fringilla, tincidunt dolor in, condimentum tellus.");
+                    sp.setTwitterHandle("@"+names[0].trim().toLowerCase()+"_"+names[1].trim().toLowerCase());
 
                     // http://loremflickr.com/320/240/nature
                     sp.setPicture("assets/images/unknown.jpg");
@@ -118,6 +119,7 @@ public class SpeakerDAO {
             if (fs.getNameFirst().toLowerCase().equals(sp.getNameFirst().toLowerCase())
                     && fs.getNameLast().toLowerCase().equals(sp.getNameLast().toLowerCase())) {
                 sp.setPicture(fs.getPicture());
+                sp.setTitle(fs.getTitle());
                 sp.setBiography(fs.getBiography());
                 sp.setTwitterHandle(fs.getTwitterHandle());
                 sp.setOrganization(fs.getOrganization());

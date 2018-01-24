@@ -16,6 +16,7 @@ package io.microprofile.showcase.schedule.resources;
 import io.microprofile.showcase.schedule.model.Schedule;
 import io.microprofile.showcase.schedule.persistence.ScheduleDAO;
 import io.microprofile.showcase.schedule.rest.Application;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -24,14 +25,18 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.arquillian.CreateSwarm;
+
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -44,11 +49,11 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
-@RunAsClient
 public class ScheduleResourceClientTest {
 
     private static final String TEST_SESSION = String.valueOf(12);
@@ -63,14 +68,28 @@ public class ScheduleResourceClientTest {
     public static WebArchive createDeployment() {
 
         final File bootstrapLib = Maven.resolver().resolve("io.microprofile.showcase:demo-bootstrap:1.0.0-SNAPSHOT").withoutTransitivity().asSingleFile();
-
+        File[] deps = Maven.resolver()
+				.loadPomFromFile("pom.xml")
+				.importDependencies(ScopeType.COMPILE,ScopeType.RUNTIME,ScopeType.TEST).resolve()
+				.withTransitivity().asFile();
         return ShrinkWrap.create(WebArchive.class, "schedule-microservice.war")
-                .addPackage(Schedule.class.getPackage())
-                .addClasses(ScheduleResource.class, ScheduleDAO.class, Application.class)
+                .addPackages(true,"io.microprofile.showcase.schedule")
+                //.addClasses(ScheduleResource.class, ScheduleDAO.class, Application.class)
+                .addAsLibraries(deps)
                 .addAsLibraries(bootstrapLib);
     }
+    
+    @CreateSwarm
+	public static Swarm newContainer() throws Exception {
+    	Properties properties = new Properties();
+		properties.put("swarm.http.port", 6060);
+		properties.put("java.util.logging.manager", "org.jboss.logmanager.LogManager");
+		Swarm swarm = new Swarm(properties);
+		return swarm.withProfile("defaults");
+	}
 
     @Test
+    @RunAsClient
     @InSequence(1)
     public void shouldCreateSchedule() throws Exception {
         final Response response = createScheduledSession(TEST_SESSION, TEST_VENUE, String.valueOf(400), LocalDate.now(), LocalTime.now());
@@ -79,10 +98,11 @@ public class ScheduleResourceClientTest {
     }
 
     @Test
+    @RunAsClient
     @InSequence(2)
     public void shouldGetAlreadyCreatedSchedule() throws Exception {
         final URL url = new URL(base, "schedule/" + scheduleId);
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         final JsonObject jsonObject = readJsonContent(response);
@@ -92,6 +112,7 @@ public class ScheduleResourceClientTest {
     }
 
     @Test
+    @RunAsClient
     @InSequence(3)
     public void shouldGetScheduledSessionsForVenue() throws Exception {
         final String microprofile = String.valueOf(20);
@@ -103,7 +124,7 @@ public class ScheduleResourceClientTest {
         createScheduledSession(payaraMicro, "Hilton", String.valueOf(500), LocalDate.now(), LocalTime.now());
 
         final URL url = new URL(base, "schedule/venue/500");
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         final JsonArray jsonArray = readJsonArray(response);
@@ -111,6 +132,7 @@ public class ScheduleResourceClientTest {
     }
 
     @Test
+    @RunAsClient
     @InSequence(4)
     public void shouldGetActiveScheduledSessions() throws Exception {
         final String webServices = String.valueOf(100);
@@ -122,7 +144,7 @@ public class ScheduleResourceClientTest {
         createScheduledSession(java, "Moscone", String.valueOf(600), LocalDate.of(1995, 9, 21), LocalTime.of(16, 0));
 
         final URL url = new URL(base, "schedule/active/" + LocalDateTime.of(1995, 9, 20, 17, 34, 29));
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         final JsonArray jsonArray = readJsonArray(response);
@@ -130,10 +152,11 @@ public class ScheduleResourceClientTest {
     }
 
     @Test
+    @RunAsClient
     @InSequence(5)
     public void shouldGetScheduledSessionsByDate() throws Exception {
         final URL url = new URL(base, "schedule/all/" + LocalDate.of(1995, 9, 20));
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
         final JsonArray jsonArray = readJsonArray(response);
@@ -141,6 +164,7 @@ public class ScheduleResourceClientTest {
     }
 
     @Test
+    @RunAsClient
     @InSequence(6)
     public void shouldRemoveSchedule() throws Exception {
         final String removeMe = String.valueOf(200);
@@ -148,12 +172,12 @@ public class ScheduleResourceClientTest {
         final String removeId = getScheduleId(createResponse);
 
         final URL url = new URL(base, "schedule/" + removeId);
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Response deleteResponse = target.request(MediaType.APPLICATION_JSON_TYPE).delete();
         assertEquals(204, deleteResponse.getStatus());
 
         final URL checkUrl = new URL(base, "schedule/" + removeId);
-        final WebTarget checkTarget = ClientBuilder.newClient().target(checkUrl.toExternalForm());
+        final WebTarget checkTarget = ResteasyClientBuilder.newClient().target(checkUrl.toExternalForm());
         final Response checkResponse = checkTarget.request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(404, checkResponse.getStatus());
     }
@@ -181,7 +205,7 @@ public class ScheduleResourceClientTest {
 
     private Response createScheduledSession(final String session, final String venue, final String venueId, final LocalDate date, final LocalTime time) throws MalformedURLException {
         final URL url = new URL(base, "schedule");
-        final WebTarget target = ClientBuilder.newClient().target(url.toExternalForm());
+        final WebTarget target = ResteasyClientBuilder.newClient().target(url.toExternalForm());
         final Schedule schedule = new Schedule(session, venue, venueId, date, time, Duration.ofHours(1L));
         return target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.entity(schedule, MediaType.APPLICATION_JSON_TYPE));
     }

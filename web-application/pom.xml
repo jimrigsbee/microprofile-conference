@@ -205,6 +205,7 @@
                         <configuration>
                             <tomeeVersion>${version.tomee}</tomeeVersion>
                             <tomeeClassifier>webprofile</tomeeClassifier>
+                            <tomeeHttpPort>8083</tomeeHttpPort>
                             <!--@formatter:off-->
                             <webapps>
                                 <!--

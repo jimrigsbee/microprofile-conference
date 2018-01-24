@@ -65,12 +65,6 @@ export class SessionsComponent implements OnInit, OnChanges {
         this.router.navigate(['/detail', this.selectedSession.id]);
     }
 
-    logout(): void {
-        this.auth.logout();
-        console.log("logged out, navigating back to /");
-        this.router.navigateByUrl("/login");
-    }
-
     private static handleError(error: any): Promise<any> {
         console.error('An error occurred', error); // TODO - Display safe error
         return Promise.reject(error.message || error);

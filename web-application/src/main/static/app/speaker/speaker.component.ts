@@ -1,5 +1,7 @@
 import {Component, Input, enableProdMode} from "@angular/core";
 import {Speaker} from "./speaker";
+import {AuthService} from "../shared/auth.service";
+
 
 enableProdMode();
 
@@ -11,4 +13,5 @@ enableProdMode();
 export class SpeakerComponent {
     title = 'Conference Speaker';
     @Input() speaker: Speaker;
+    constructor(private auth: AuthService) {}
 }

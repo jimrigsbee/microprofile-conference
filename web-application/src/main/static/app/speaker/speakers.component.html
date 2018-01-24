@@ -15,12 +15,10 @@
 <div class="container p-a-1 rounded" style="background: white">
     <div class="row">
         <div class="col-xs">
-            <h4>{{title}}
-                <small class="text-muted">Search for your favourite speaker</small>
-            </h4>
+            <h4>{{title}}</h4>
         </div>
         <div class="col-xs">
-            <input #speakerSearch type="text" class="form-control" placeholder="[Speaker name]"
+            <input #speakerSearch type="text" class="form-control" placeholder="Search for your favourite speaker..."
                    (keyup)="onSearch(speakerSearch.value)">
         </div>
     </div>

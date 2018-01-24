@@ -29,6 +29,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+
 import io.microprofile.showcase.vote.api.SessionRatingListProvider;
 import io.microprofile.showcase.vote.api.SessionRatingProvider;
 import io.microprofile.showcase.vote.model.Attendee;
@@ -36,7 +38,7 @@ import io.microprofile.showcase.vote.model.SessionRating;
 
 public class RatingClientUtility {
 
-	private static String ROOT_URL = "http://localhost:" + System.getProperty("liberty.test.port") + "/" + System.getProperty("app.context.root");
+	private static String ROOT_URL = "http://localhost:8080/vote";//+ System.getProperty("liberty.test.port") + "/" + System.getProperty("app.context.root");
     private static String RATE_URL = ROOT_URL + "/rate";
     private static String RATE_BY_SESSION_URL = ROOT_URL + "/ratingsBySession";
     private static String AVG_RATE_BY_SESSION_URL = ROOT_URL + "/averageRatingBySession";
@@ -45,11 +47,11 @@ public class RatingClientUtility {
     private final Client ratingClient;
 
     public RatingClientUtility() {
-        ratingClient = ClientBuilder.newBuilder().build();
+        ratingClient = new ResteasyClientBuilder().build();
         ratingClient.register(SessionRatingProvider.class);
         ratingClient.register(SessionRatingListProvider.class);
     }
-    
+
     public void deleteAllRatings() {
         UriBuilder uriBuilder = UriBuilder.fromPath(RATE_URL);
         Response response = ratingClient.target(uriBuilder).request(MediaType.APPLICATION_JSON).get();
@@ -63,7 +65,7 @@ public class RatingClientUtility {
             deleteRating(id);
         }
     }
-    
+
     private void deleteRating(String ratingId) {
         UriBuilder uriBuilder = UriBuilder.fromPath(RATE_URL + "/" + ratingId);
         Response response = ratingClient.target(uriBuilder).request(MediaType.APPLICATION_JSON).delete();

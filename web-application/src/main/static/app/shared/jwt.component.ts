@@ -59,4 +59,10 @@ export class JwtComponent implements OnInit {
             console.log("No router configured");
         }
     }
+
+    logout(): void {
+        this.auth.logout();
+        console.log("logged out, navigating back to /");
+        this.router.navigateByUrl("/login");
+    }
 }

@@ -25,29 +25,31 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+
 import io.microprofile.showcase.vote.api.AttendeeListProvider;
 import io.microprofile.showcase.vote.api.AttendeeProvider;
 import io.microprofile.showcase.vote.model.Attendee;
 
+
 public class AttendeeClientUtility {
 
-	private static String ROOT_URL = "http://localhost:" + System.getProperty("liberty.test.port") + "/" + System.getProperty("app.context.root");
+	private static String ROOT_URL = "http://localhost:8080/vote"; //+ System.getProperty("liberty.test.port") + "/" + System.getProperty("app.context.root");
     private static String ATTENDEE_URL = ROOT_URL + "/attendee";
 
     private final Client attendeeClient;
 
     public AttendeeClientUtility() {
-        attendeeClient = ClientBuilder.newBuilder().build();
+    	attendeeClient = new ResteasyClientBuilder().build();
         attendeeClient.register(AttendeeProvider.class);
         attendeeClient.register(AttendeeListProvider.class);
     }
-    
+
     public void deleteAllAttendees() {
         UriBuilder uriBuilder = UriBuilder.fromPath(ATTENDEE_URL);
         Response response = attendeeClient.target(uriBuilder).request(MediaType.APPLICATION_JSON).get();
@@ -61,13 +63,13 @@ public class AttendeeClientUtility {
             deleteAttendee(id);
         }
     }
-    
+
     private void deleteAttendee(String attendeeId) {
         UriBuilder uriBuilder = UriBuilder.fromPath(ATTENDEE_URL + "/" + attendeeId);
         Response response = attendeeClient.target(uriBuilder).request(MediaType.APPLICATION_JSON).delete();
         assertEquals("Deletion of attendee " + attendeeId + " failed.", 204, response.getStatus());
     }
-    
+
     private void checkResponseStatus(Response response) {
         assertEquals("Response status was " + response.getStatus(), 200, response.getStatus());
     }
