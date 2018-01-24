@@ -57,7 +57,7 @@ public class TokenUtils {
      * @throws Exception on parse failure
      */
     public static String generateTokenString(String jsonResName) throws Exception {
-        return generateTokenString(jsonResName, null);
+        return generateTokenString(jsonResName, null, 300);
     }
 
     /**
@@ -69,7 +69,7 @@ public class TokenUtils {
      * @return the JWT string
      * @throws Exception on parse failure
      */
-    public static String generateTokenString(String jsonResName, Map<String, Object> claims) throws Exception {
+    public static String generateTokenString(String jsonResName, Map<String, Object> claims, long timeToLive) throws Exception {
         InputStream contentIS = TokenUtils.class.getResourceAsStream(jsonResName);
         byte[] tmp = new byte[4096];
         int length = contentIS.read(tmp);
@@ -79,8 +79,8 @@ public class TokenUtils {
         JSONParser parser = new JSONParser(DEFAULT_PERMISSIVE_MODE);
         JSONObject jwtContent = (JSONObject) parser.parse(content);
         long currentTimeInSecs = currentTimeInSecs();
-        long exp = currentTimeInSecs + 300;
-        // Check for an input exp to override the default of now + 300 seconds
+        long exp = currentTimeInSecs + timeToLive;
+        // Check for an input exp to override the default of now + timeToLive seconds
         if (claims != null && claims.containsKey(Claims.exp.name())) {
             Number inputExp = (Number) claims.get(Claims.exp.name());
             exp = inputExp.longValue();

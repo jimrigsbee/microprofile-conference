@@ -1,0 +1,14 @@
+{
+  "iss": "https://mpconference.com",
+  "jti": "a-123",
+  "sub": "24400320",
+  "upn": "nonvoter@example.com",
+  "preferred_username": "nonvoter",
+  "aud": ["sessions", "schedule"],
+  "exp": 1311281970,
+  "iat": 1311280970,
+  "auth_time": 1311280969,
+  "groups": [
+    "Registered"
+  ]
+}

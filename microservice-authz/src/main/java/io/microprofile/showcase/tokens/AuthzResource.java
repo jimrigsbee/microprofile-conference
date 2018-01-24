@@ -16,6 +16,7 @@ package io.microprofile.showcase.tokens;
 import java.util.HashMap;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,12 +24,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claims;
 
 @Path("authz")
 @ApplicationScoped
 public class AuthzResource {
 
+    @Inject
+    @ConfigProperty(name = "timeToLive", defaultValue = "300")
+    private long timeToLive;
+    
     // Create/return a token if valid credentials are passed
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,7 +59,7 @@ public class AuthzResource {
         // This relies on a strict naming convention for users!
         String jsonResName = String.format("/%s.json", simpleName);
         // Generate the token with claims
-        String stoken = TokenUtils.generateTokenString(jsonResName, claims);
+        String stoken = TokenUtils.generateTokenString(jsonResName, claims, timeToLive);
         System.out.printf("Created token: %s\n", stoken);
         AuthToken token = new AuthToken(credentials.getUsername(), stoken);
         // Return HTTP 200 with token
