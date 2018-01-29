@@ -13,34 +13,8 @@
  */
 package io.microprofile.showcase.schedule.resources;
 
-import io.microprofile.showcase.schedule.model.Schedule;
-import io.microprofile.showcase.schedule.persistence.ScheduleDAO;
-import io.microprofile.showcase.schedule.rest.Application;
+import static org.junit.Assert.assertEquals;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.wildfly.swarm.Swarm;
-import org.wildfly.swarm.arquillian.CreateSwarm;
-
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -51,7 +25,31 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.wildfly.swarm.Swarm;
+import org.wildfly.swarm.arquillian.CreateSwarm;
+
+import io.microprofile.showcase.schedule.model.Schedule;
 
 @RunWith(Arquillian.class)
 public class ScheduleResourceClientTest {
@@ -74,7 +72,7 @@ public class ScheduleResourceClientTest {
 				.withTransitivity().asFile();
         return ShrinkWrap.create(WebArchive.class, "schedule-microservice.war")
                 .addPackages(true,"io.microprofile.showcase.schedule")
-                //.addClasses(ScheduleResource.class, ScheduleDAO.class, Application.class)
+//                .addClasses(ScheduleResource.class, ScheduleDAO.class, Application.class)
                 .addAsLibraries(deps)
                 .addAsLibraries(bootstrapLib);
     }
